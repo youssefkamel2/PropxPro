@@ -106,8 +106,8 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'status' => $user->status,
-                'roles' => $user->getRoleNames(),
-                'permissions' => $user->getAllPermissions()->pluck('name')
+                // 'roles' => $user->getRoleNames(),
+                // 'permissions' => $user->getAllPermissions()->pluck('name')
             ]
         ], 'Authentication successful');
     }
