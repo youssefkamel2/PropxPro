@@ -21,6 +21,7 @@ class IntegrationController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api')->except(['index', 'show']);
+        $this->middleware('permission:view_integrations')->only(['indexAdmin']);
         $this->middleware('permission:create_integration')->only(['store']);
         $this->middleware('permission:edit_integration')->only(['update']);
         $this->middleware('permission:delete_integration')->only(['destroy']);
@@ -28,8 +29,9 @@ class IntegrationController extends Controller
         $this->middleware('permission:manage_integration_order')->only(['updateOrder']);
     }
 
-    public function index(): JsonResponse
+    public function indexPublic(): JsonResponse
     {
+
         $integrations = Integration::where('is_active', true)
             ->orderBy('display_order')
             ->get();
@@ -37,6 +39,16 @@ class IntegrationController extends Controller
         return $this->success(
             IntegrationResource::collection($integrations),
             'Integrations retrieved successfully'
+        );
+    }
+
+    public function indexAdmin(): JsonResponse
+    {
+        $integrations = Integration::orderBy('display_order')->get();
+
+        return $this->success(
+            IntegrationResource::collection($integrations),
+            'All integrations retrieved successfully'
         );
     }
 
@@ -57,9 +69,9 @@ class IntegrationController extends Controller
         try {
             $validated = $validator->validated();
             $logoPath = $request->file('logo')->store('integrations', 'public');
-            
+
             $displayOrder = $validated['display_order'] ?? Integration::max('display_order') + 1;
-            
+
             $integration = Integration::create([
                 'name' => $validated['name'],
                 'slug' => Str::slug($validated['name']),
@@ -82,7 +94,7 @@ class IntegrationController extends Controller
     public function show($id): JsonResponse
     {
         $integration = Integration::find($id);
-        
+
         if (!$integration) {
             return $this->error('Integration not found', 404);
         }
@@ -96,7 +108,7 @@ class IntegrationController extends Controller
     public function update(Request $request, $id): JsonResponse
     {
         $integration = Integration::find($id);
-        
+
         if (!$integration) {
             return $this->error('Integration not found', 404);
         }
@@ -156,7 +168,7 @@ class IntegrationController extends Controller
     public function destroy($id): JsonResponse
     {
         $integration = Integration::find($id);
-        
+
         if (!$integration) {
             return $this->error('Integration not found', 404);
         }
@@ -165,9 +177,9 @@ class IntegrationController extends Controller
             if ($integration->logo_path) {
                 Storage::disk('public')->delete($integration->logo_path);
             }
-            
+
             $integration->delete();
-            
+
             return $this->success(
                 null,
                 'Integration deleted successfully'
@@ -180,14 +192,14 @@ class IntegrationController extends Controller
     public function toggleStatus($id): JsonResponse
     {
         $integration = Integration::find($id);
-        
+
         if (!$integration) {
             return $this->error('Integration not found', 404);
         }
 
         try {
             $integration->update(['is_active' => !$integration->is_active]);
-            
+
             return $this->success(
                 new IntegrationResource($integration),
                 'Integration status updated successfully'

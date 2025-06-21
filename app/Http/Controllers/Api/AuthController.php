@@ -58,7 +58,6 @@ class AuthController extends Controller
             // Clear login attempts on successful login
             $this->clearLoginAttempts($email);
             return $this->respondWithToken($token);
-
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -66,15 +65,24 @@ class AuthController extends Controller
 
     public function me(): JsonResponse
     {
-        // retrive the role and the perissions also
-
+        /** @var User $user */
         $user = auth()->user();
-        $role = $user->getRoleNames();
-        $permissions = $user->getAllPermissions()->pluck('name');
+
+        // Get all permissions including those from roles
+        $permissions = $user->getPermissionsViaRoles()->pluck('name')->merge(
+            $user->getDirectPermissions()->pluck('name')
+        )->unique()->values();
 
         return $this->success([
-            'user' => $user,
-            'role' => $role,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'status' => $user->status,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at,
+            ],
+            'roles' => $user->getRoleNames(),
             'permissions' => $permissions
         ], 'User profile retrieved successfully');
     }
@@ -85,30 +93,27 @@ class AuthController extends Controller
         return $this->success(null, 'Successfully logged out');
     }
 
-    public function refresh(): JsonResponse
+    protected function respondWithToken(string $token): JsonResponse
     {
-        try {
-            return $this->respondWithToken(auth()->refresh());
-        } catch (\Exception $e) {
-            return $this->error('Token refresh failed', 401);
-        }
-    }
-
-    protected function respondWithToken($token): JsonResponse
-    {
+        /** @var User $user */
         $user = auth()->user();
+
+        // Get all permissions including those from roles
+        $permissions = $user->getPermissionsViaRoles()->pluck('name')->merge(
+            $user->getDirectPermissions()->pluck('name')
+        )->unique()->values();
+
         return $this->success([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'status' => $user->status,
-                'roles' => $user->getRoleNames(),
-                'permissions' => $user->getAllPermissions()->pluck('name')
-            ]
+            ],
+            'roles' => $user->getRoleNames(),
+            'permissions' => $permissions
         ], 'Authentication successful');
     }
 }

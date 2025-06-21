@@ -20,7 +20,6 @@ use App\Http\Controllers\Api\IntegrationController;
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('refresh', [AuthController::class, 'refresh']);
     Route::get('me', [AuthController::class, 'me']);
 });
 
@@ -41,6 +40,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // Integration management routes (protected by permissions)
     Route::group(['prefix' => 'admin/integrations'], function () {
+        Route::get('/', [IntegrationController::class, 'indexAdmin']);
         Route::post('/', [IntegrationController::class, 'store']);
         Route::post('/{integration}', [IntegrationController::class, 'update']);
         Route::delete('/{integration}', [IntegrationController::class, 'destroy']);
@@ -49,4 +49,4 @@ Route::group(['middleware' => ['auth:api']], function () {
 });
 
 // Public integration routes
-Route::get('integrations', [IntegrationController::class, 'index']);
+Route::get('integrations', [IntegrationController::class, 'indexPublic']);

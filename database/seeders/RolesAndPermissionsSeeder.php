@@ -72,9 +72,6 @@ class RolesAndPermissionsSeeder extends Seeder
         // Assign all permissions to superadmin
         $superadminRole->givePermissionTo(Permission::all());
 
-        // Assign only view permissions to admin by default
-        $adminRole->givePermissionTo(['view_integrations']);
-
         // Create default superadmin user if it doesn't exist
         $superadmin = User::firstOrCreate(
             ['email' => 'superadmin@propxpro.com'],

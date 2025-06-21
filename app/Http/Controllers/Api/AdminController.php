@@ -208,7 +208,7 @@ class AdminController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'permissions' => 'required|array',
+            'permissions' => 'sometimes|array',
             'permissions.*' => 'string|exists:permissions,name'
         ]);
 
