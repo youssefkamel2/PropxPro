@@ -39,6 +39,7 @@ class PlanController extends Controller
                 $pivot = $plan->features->firstWhere('id', $feature->id)?->pivot;
                 $value = $pivot ? ($feature->type === 'boolean' ? filter_var($pivot->value, FILTER_VALIDATE_BOOLEAN) : $pivot->value) : null;
                 $featureData = [
+                    'id' => $feature->id,
                     'name' => $feature->name,
                     'value' => $value,
                     'type' => $feature->type === 'text' ? 'string' : $feature->type,
@@ -65,6 +66,7 @@ class PlanController extends Controller
         // Format features and additional usage charges for the top-level arrays
         $featuresArr = $features->map(function ($feature) {
             return [
+                'id' => $feature->id,
                 'key' => $feature->key,
                 'name' => $feature->name,
                 'value' => null,
@@ -73,6 +75,7 @@ class PlanController extends Controller
         })->values();
         $additionalUsageChargesArr = $additionalUsageCharges->map(function ($feature) {
             return [
+                'id' => $feature->id,
                 'key' => $feature->key,
                 'name' => $feature->name,
                 'value' => null,
