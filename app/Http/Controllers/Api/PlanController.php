@@ -102,6 +102,7 @@ class PlanController extends Controller
             'monthly_price' => 'required|numeric',
             'annual_price' => 'required|numeric',
             'description' => 'nullable|string',
+            'is_popular' => 'sometimes|boolean',
             'features' => 'nullable|array',
             'features.*.id' => 'required|exists:features,id',
             'features.*.value' => 'nullable',
@@ -147,6 +148,7 @@ class PlanController extends Controller
             'monthly_price' => $plan->monthly_price,
             'annual_price' => $plan->annual_price,
             'description' => $plan->description,
+            'is_popular' => $plan->is_popular,
             'created_at' => $plan->created_at,
             'updated_at' => $plan->updated_at,
             'features' => $plan->features->map(function ($feature) {
@@ -179,6 +181,7 @@ class PlanController extends Controller
             'monthly_price' => 'sometimes|numeric',
             'annual_price' => 'sometimes|numeric',
             'description' => 'nullable|string',
+            'is_popular' => 'sometimes|boolean',
             'features' => 'nullable|array',
             'features.*.id' => 'required|exists:features,id',
             'features.*.value' => 'nullable',
@@ -215,6 +218,7 @@ class PlanController extends Controller
             'monthly_price' => $plan->monthly_price,
             'annual_price' => $plan->annual_price,
             'description' => $plan->description,
+            'is_popular' => $plan->is_popular,
             'created_at' => $plan->created_at,
             'updated_at' => $plan->updated_at,
             'features' => $plan->features->map(function ($feature) {
