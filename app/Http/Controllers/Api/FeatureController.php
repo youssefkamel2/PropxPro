@@ -34,7 +34,7 @@ class FeatureController extends Controller
             'key' => 'required|string|unique:features,key',
             'name' => 'required|string',
             'type' => 'required|in:boolean,text',
-            'category' => 'sometimes|string',
+            'category' => 'sometimes',
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors()->first(), 422);
