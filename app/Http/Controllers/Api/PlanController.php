@@ -51,6 +51,7 @@ class PlanController extends Controller
                 }
             }
             return [
+                'id' => $plan->id,
                 'name' => $plan->name,
                 'title' => $plan->title,
                 'description' => $plan->description,
