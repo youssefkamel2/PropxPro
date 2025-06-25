@@ -20,7 +20,7 @@ class IntegrationController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api')->except(['index', 'show']);
+        $this->middleware('auth:api')->except(['indexPublic', 'show']);
         $this->middleware('permission:view_integrations')->only(['indexAdmin']);
         $this->middleware('permission:create_integration')->only(['store']);
         $this->middleware('permission:edit_integration')->only(['update']);

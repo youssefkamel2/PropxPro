@@ -46,7 +46,16 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::delete('/{integration}', [IntegrationController::class, 'destroy']);
         Route::patch('/{integration}/toggle-status', [IntegrationController::class, 'toggleStatus']);
     });
+
+    // Feature and Plan management (admin)
+    Route::group(['prefix' => 'admin'], function () {
+        Route::apiResource('features', \App\Http\Controllers\Api\FeatureController::class);
+        Route::apiResource('plans', \App\Http\Controllers\Api\PlanController::class);
+    });
 });
 
 // Public integration routes
 Route::get('integrations', [IntegrationController::class, 'indexPublic']);
+
+// Public plans listing
+Route::get('plans', [\App\Http\Controllers\Api\PlanController::class, 'index']);

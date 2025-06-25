@@ -46,7 +46,23 @@ class RolesAndPermissionsSeeder extends Seeder
             'manage_integration_order' => 'Can manage integration display order',
         ];
 
-        $allPermissions = array_merge($adminManagementPermissions, $integrationPermissions);
+        // Add feature permissions
+        $featurePermissions = [
+            'view_features' => 'Can view features',
+            'create_feature' => 'Can create features',
+            'edit_feature' => 'Can edit features',
+            'delete_feature' => 'Can delete features',
+        ];
+
+        // Add plan permissions
+        $planPermissions = [
+            'view_plans' => 'Can view plans',
+            'create_plan' => 'Can create plans',
+            'edit_plan' => 'Can edit plans',
+            'delete_plan' => 'Can delete plans',
+        ];
+
+        $allPermissions = array_merge($adminManagementPermissions, $integrationPermissions, $featurePermissions, $planPermissions);
 
         foreach ($allPermissions as $permission => $description) {
             Permission::create([
