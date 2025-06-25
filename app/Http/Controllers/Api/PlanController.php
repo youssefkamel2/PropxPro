@@ -85,7 +85,7 @@ class PlanController extends Controller
             'message' => 'Successfully retrieved pricing data',
             'data' => [
                 'features' => $featuresArr,
-                // 'additionalUsageCharges' => $additionalUsageChargesArr,
+                'additionalUsageCharges' => $additionalUsageChargesArr,
                 'plans' => $plans,
             ]
         ]);
