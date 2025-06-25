@@ -10,7 +10,7 @@ class Feature extends Model
     use HasFactory;
 
     protected $fillable = [
-        'key', 'name', 'type',
+        'key', 'name', 'type', 'category',
     ];
 
     public function plans()

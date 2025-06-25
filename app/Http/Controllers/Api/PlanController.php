@@ -25,25 +25,70 @@ class PlanController extends Controller
     // Public endpoint
     public function index(): JsonResponse
     {
-        $plans = Plan::with('features')->get();
-        $plans = $plans->map(function ($plan) {
+        // Get all features and split by category
+        $allFeatures = Feature::all();
+        $features = $allFeatures->where('category', null)->values();
+        $additionalUsageCharges = $allFeatures->where('category', 'additional_usage_charge')->values();
+
+        // Get all plans with their features
+        $plans = Plan::with('features')->get()->map(function ($plan) use ($allFeatures) {
+            // Map features by key for this plan
+            $planFeatures = [];
+            $planAdditionalUsageCharges = [];
+            foreach ($allFeatures as $feature) {
+                $pivot = $plan->features->firstWhere('id', $feature->id)?->pivot;
+                $value = $pivot ? ($feature->type === 'boolean' ? filter_var($pivot->value, FILTER_VALIDATE_BOOLEAN) : $pivot->value) : null;
+                $featureData = [
+                    'name' => $feature->name,
+                    'value' => $value,
+                    'type' => $feature->type === 'text' ? 'string' : $feature->type,
+                ];
+                if ($feature->category === 'additional_usage_charge') {
+                    $planAdditionalUsageCharges[$feature->key] = $featureData;
+                } else {
+                    $planFeatures[$feature->key] = $featureData;
+                }
+            }
             return [
-                'id' => $plan->id,
                 'name' => $plan->name,
-                'monthly_price' => $plan->monthly_price,
-                'annual_price' => $plan->annual_price,
+                'title' => $plan->title,
                 'description' => $plan->description,
-                'features' => $plan->features->map(function ($feature) {
-                    return [
-                        'key' => $feature->key,
-                        'name' => $feature->name,
-                        'value' => $feature->pivot->value === null ? null : ($feature->type === 'boolean' ? filter_var($feature->pivot->value, FILTER_VALIDATE_BOOLEAN) : $feature->pivot->value),
-                        'type' => $feature->type,
-                    ];
-                }),
+                'monthlyPrice' => (string) $plan->monthly_price,
+                'annualPrice' => (string) $plan->annual_price,
+                'annualSavings' => $plan->annual_savings,
+                'isPopular' => (bool) $plan->is_popular,
+                'features' => $planFeatures,
+                'additionalUsageCharges' => $planAdditionalUsageCharges,
             ];
         });
-        return $this->success($plans, 'Plans retrieved successfully');
+
+        // Format features and additional usage charges for the top-level arrays
+        $featuresArr = $features->map(function ($feature) {
+            return [
+                'key' => $feature->key,
+                'name' => $feature->name,
+                'value' => null,
+                'type' => $feature->type === 'text' ? 'string' : $feature->type,
+            ];
+        })->values();
+        $additionalUsageChargesArr = $additionalUsageCharges->map(function ($feature) {
+            return [
+                'key' => $feature->key,
+                'name' => $feature->name,
+                'value' => null,
+                'type' => $feature->type === 'text' ? 'string' : $feature->type,
+            ];
+        })->values();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully retrieved pricing data',
+            'data' => [
+                'features' => $featuresArr,
+                // 'additionalUsageCharges' => $additionalUsageChargesArr,
+                'plans' => $plans,
+            ]
+        ]);
     }
 
     public function store(Request $request): JsonResponse

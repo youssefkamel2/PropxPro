@@ -11,8 +11,11 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('title')->nullable();
             $table->decimal('monthly_price', 8, 2);
             $table->decimal('annual_price', 8, 2);
+            $table->string('annual_savings')->nullable();
+            $table->boolean('is_popular')->default(false);
             $table->text('description')->nullable();
             $table->timestamps();
         });

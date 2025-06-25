@@ -10,7 +10,7 @@ class Plan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'monthly_price', 'annual_price', 'description',
+        'name', 'title', 'monthly_price', 'annual_price', 'annual_savings', 'is_popular', 'description',
     ];
 
     public function features()

@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('key')->unique();
             $table->string('name');
             $table->enum('type', ['boolean', 'text']);
+            $table->string('category')->nullable();
             $table->timestamps();
         });
     }
