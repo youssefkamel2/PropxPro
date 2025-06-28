@@ -16,7 +16,8 @@ class PlanController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:view_plans')->only(['show']);
+        $this->middleware('auth:api')->except(['indexPublic', 'show']);
+        $this->middleware('permission:view_plans')->only(['indexAdmin']);
         $this->middleware('permission:create_plan')->only(['store']);
         $this->middleware('permission:edit_plan')->only(['update']);
         $this->middleware('permission:toggle_plan_status')->only(['toggleStatus']);
@@ -24,7 +25,12 @@ class PlanController extends Controller
     }
 
     // Public endpoint
-    public function index(): JsonResponse
+    public function indexPublic(): JsonResponse {
+        $plans = Plan::where('is_active', true)->get();
+        return $this->success($plans, 'Plans retrieved successfully');
+    }
+
+    public function indexAdmin(): JsonResponse
     {
         // Get all features and split by category
         $allFeatures = Feature::all();
