@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::patch('features/{feature}/toggle-status', [FeatureController::class, 'toggleStatus']);
 
         // Plan management
-        Route::get('plans', [PlanController::class, 'indexAdmin']);
+        Route::get('plans', [PlanController::class, 'index']);
         Route::post('plans', [PlanController::class, 'store']);
         Route::get('plans/{plan}', [PlanController::class, 'show']);
         Route::post('plans/{plan}', [PlanController::class, 'update']);
