@@ -19,6 +19,7 @@ class PlanController extends Controller
         $this->middleware('permission:view_plans')->only(['show']);
         $this->middleware('permission:create_plan')->only(['store']);
         $this->middleware('permission:edit_plan')->only(['update']);
+        $this->middleware('permission:toggle_plan_status')->only(['toggleStatus']);
         $this->middleware('permission:delete_plan')->only(['destroy']);
     }
 
@@ -243,6 +244,22 @@ class PlanController extends Controller
         return $this->success($formatted, 'Plan updated successfully');
     }
 
+    public function toggleStatus($id): JsonResponse
+    {
+        $plan = Plan::find($id);
+        if (!$plan) {
+            return $this->error('Plan not found', 404);
+        }
+
+        try {
+            $plan->update(['is_active' => !$plan->is_active]);
+
+            return $this->success($plan, 'Plan status updated successfully');
+        } catch (\Exception $e) {
+            return $this->error('Failed to toggle plan status: ' . $e->getMessage(), 500);
+        }
+    }
+
     public function destroy($id): JsonResponse
     {
         $plan = Plan::find($id);
@@ -252,4 +269,4 @@ class PlanController extends Controller
         $plan->delete();
         return $this->success(null, 'Plan deleted successfully');
     }
-} 
+}

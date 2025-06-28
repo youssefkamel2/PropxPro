@@ -18,6 +18,7 @@ class FeatureController extends Controller
         $this->middleware('permission:view_features')->only(['show']);
         $this->middleware('permission:create_feature')->only(['store']);
         $this->middleware('permission:edit_feature')->only(['update']);
+        $this->middleware('permission:toggle_feature_status')->only(['toggleStatus']);
         $this->middleware('permission:delete_feature')->only(['destroy']);
     }
 
@@ -70,6 +71,23 @@ class FeatureController extends Controller
         return $this->success($feature, 'Feature updated successfully');
     }
 
+    // toggle status
+    public function toggleStatus($id): JsonResponse
+    {
+        $feature = Feature::find($id);
+        if (!$feature) {
+            return $this->error('Feature not found', 404);
+        }
+
+        try {
+            $feature->update(['is_active' => !$feature->is_active]);
+
+            return $this->success($feature, 'Feature status updated successfully');
+        } catch (\Exception $e) {
+            return $this->error('Failed to toggle integration status: ' . $e->getMessage(), 500);
+        }
+    }
+
     public function destroy($id): JsonResponse
     {
         $feature = Feature::find($id);
@@ -79,4 +97,4 @@ class FeatureController extends Controller
         $feature->delete();
         return $this->success(null, 'Feature deleted successfully');
     }
-} 
+}

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('annual_savings')->nullable();
             $table->boolean('is_popular')->default(false);
             $table->text('description')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

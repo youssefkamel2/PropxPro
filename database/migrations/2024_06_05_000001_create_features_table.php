@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('name');
             $table->enum('type', ['boolean', 'text']);
             $table->string('category')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

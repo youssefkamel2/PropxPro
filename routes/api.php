@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PlanController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\IntegrationController;
 
 /*
@@ -32,7 +34,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('/{admin}', [AdminController::class, 'update']);
         Route::patch('/{admin}/toggle-status', [AdminController::class, 'toggleStatus']);
         Route::delete('/{admin}', [AdminController::class, 'destroy']);
-        
+
         // Permission management
         Route::get('/permissions', [AdminController::class, 'listAvailablePermissions']);
         Route::put('/{admin}/permissions', [AdminController::class, 'updatePermissions']);
@@ -49,8 +51,20 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // Feature and Plan management (admin)
     Route::group(['prefix' => 'admin'], function () {
-        Route::apiResource('features', \App\Http\Controllers\Api\FeatureController::class);
-        Route::apiResource('plans', \App\Http\Controllers\Api\PlanController::class);
+        Route::get('features', [FeatureController::class, 'index']);
+        Route::post('features', [FeatureController::class, 'store']);
+        Route::get('features/{feature}', [FeatureController::class, 'show']);
+        Route::post('features/{feature}', [FeatureController::class, 'update']);
+        Route::delete('features/{feature}', [FeatureController::class, 'destroy']);
+        Route::patch('features/{feature}/toggle-status', [FeatureController::class, 'toggleStatus']);
+
+        // Plan management
+        Route::get('plans', [PlanController::class, 'indexAdmin']);
+        Route::post('plans', [PlanController::class, 'store']);
+        Route::get('plans/{plan}', [PlanController::class, 'show']);
+        Route::post('plans/{plan}', [PlanController::class, 'update']);
+        Route::delete('plans/{plan}', [PlanController::class, 'destroy']);
+        Route::patch('plans/{plan}/toggle-status', [PlanController::class, 'toggleStatus']);
     });
 });
 
@@ -58,4 +72,4 @@ Route::group(['middleware' => ['auth:api']], function () {
 Route::get('integrations', [IntegrationController::class, 'indexPublic']);
 
 // Public plans listing
-Route::get('plans', [\App\Http\Controllers\Api\PlanController::class, 'index']);
+Route::get('plans', [PlanController::class, 'index']);

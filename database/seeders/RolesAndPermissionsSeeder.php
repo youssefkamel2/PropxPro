@@ -52,6 +52,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'create_feature' => 'Can create features',
             'edit_feature' => 'Can edit features',
             'delete_feature' => 'Can delete features',
+            'toggle_feature_status' => 'Can activate/deactivate features',
         ];
 
         // Add plan permissions
@@ -60,6 +61,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'create_plan' => 'Can create plans',
             'edit_plan' => 'Can edit plans',
             'delete_plan' => 'Can delete plans',
+            'toggle_plan_status' => 'Can activate/deactivate plans',
         ];
 
         $allPermissions = array_merge($adminManagementPermissions, $integrationPermissions, $featurePermissions, $planPermissions);
