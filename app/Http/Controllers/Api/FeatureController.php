@@ -15,29 +15,11 @@ class FeatureController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:view_features')->only(['indexAdmin', 'show']);
+        $this->middleware('permission:view_features')->only(['show']);
         $this->middleware('permission:create_feature')->only(['store']);
         $this->middleware('permission:edit_feature')->only(['update']);
         $this->middleware('permission:toggle_feature_status')->only(['toggleStatus']);
         $this->middleware('permission:delete_feature')->only(['destroy']);
-    }
-
-    // Admin endpoint
-    public function indexAdmin(): JsonResponse
-    {
-        $features = Feature::all()->map(function ($feature) {
-            return [
-                'id' => $feature->id,
-                'key' => $feature->key,
-                'name' => $feature->name,
-                'type' => $feature->type,
-                'category' => $feature->category,
-                'is_active' => (bool) $feature->is_active,
-                'created_at' => $feature->created_at,
-                'updated_at' => $feature->updated_at,
-            ];
-        });
-        return $this->success($features, 'Features retrieved successfully');
     }
 
     // Public endpoint
