@@ -25,20 +25,20 @@ class PlanController extends Controller
     }
 
     // Public endpoint
-    public function indexPublic(): JsonResponse {
-        $plans = Plan::where('is_active', true)->get();
+    public function indexAdmin(): JsonResponse {
+        $plans = Plan::get();
         return $this->success($plans, 'Plans retrieved successfully');
     }
 
-    public function indexAdmin(): JsonResponse
+    public function indexPublic(): JsonResponse
     {
-        // Get all features and split by category
-        $allFeatures = Feature::all();
+        // Get all active features and split by category
+        $allFeatures = Feature::where('is_active', true)->get();
         $features = $allFeatures->where('category', null)->values();
         $additionalUsageCharges = $allFeatures->where('category', 'additional_usage_charge')->values();
 
-        // Get all plans with their features
-        $plans = Plan::with('features')->get()->map(function ($plan) use ($allFeatures) {
+        // Get all active plans with their features
+        $plans = Plan::where('is_active', true)->with('features')->get()->map(function ($plan) use ($allFeatures) {
             // Map features by key for this plan
             $planFeatures = [];
             $planAdditionalUsageCharges = [];
@@ -81,6 +81,7 @@ class PlanController extends Controller
                 'type' => $feature->type === 'text' ? 'string' : $feature->type,
             ];
         })->values();
+        
         $additionalUsageChargesArr = $additionalUsageCharges->map(function ($feature) {
             return [
                 'id' => $feature->id,
