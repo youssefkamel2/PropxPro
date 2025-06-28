@@ -57,7 +57,7 @@ Route::group(['middleware' => ['auth:api']], function () {
             Route::get('/', [FeatureController::class, 'index']);
             Route::post('/', [FeatureController::class, 'store']);
             Route::get('/{feature}', [FeatureController::class, 'show']);
-            Route::post('/{feature}', [FeatureController::class, 'update']);
+            Route::put('/{feature}', [FeatureController::class, 'update']);
             Route::delete('/{feature}', [FeatureController::class, 'destroy']);
             Route::patch('/{feature}/toggle-status', [FeatureController::class, 'toggleStatus']);
         });
@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth:api']], function () {
             Route::get('/', [PlanController::class, 'indexAdmin']);
             Route::post('/', [PlanController::class, 'store']);
             Route::get('/{plan}', [PlanController::class, 'show']);
-            Route::post('/{plan}', [PlanController::class, 'update']);
+            Route::put('/{plan}', [PlanController::class, 'update']);
             Route::delete('/{plan}', [PlanController::class, 'destroy']);
             Route::patch('/{plan}/toggle-status', [PlanController::class, 'toggleStatus']);
         });
