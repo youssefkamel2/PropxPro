@@ -16,7 +16,7 @@ class FeatureController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api')->except(['indexPublic', 'show']);
+        $this->middleware('auth:api')->except(['index', 'show']);
         $this->middleware('permission:view_features')->only(['indexAdmin']);
         $this->middleware('permission:create_feature')->only(['store']);
         $this->middleware('permission:edit_feature')->only(['update']);
@@ -25,18 +25,9 @@ class FeatureController extends Controller
     }
 
     // Public endpoint
-    public function indexPublic(): JsonResponse
-    {
-        $features = Feature::where('is_active', true)->get();
-
-        return $this->success(
-            FeatureResource::collection($features),
-            'Features retrieved successfully'
-        );
-    }
 
     // Admin endpoint
-    public function indexAdmin(): JsonResponse
+    public function index(): JsonResponse
     {
         $features = Feature::all();
 
