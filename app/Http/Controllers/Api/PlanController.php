@@ -62,7 +62,7 @@ class PlanController extends Controller
                 'annualPrice' => (string) $plan->annual_price,
                 'annualSavings' => $plan->annual_savings,
                 'isPopular' => (bool) $plan->is_popular,
-                'isActive' => (bool) $plan->is_active,
+                'is_active' => (bool) $plan->is_active,
                 'features' => $planFeatures,
                 'additionalUsageCharges' => $planAdditionalUsageCharges,
             ];
@@ -76,7 +76,7 @@ class PlanController extends Controller
                 'name' => $feature->name,
                 'value' => null,
                 'type' => $feature->type === 'text' ? 'string' : $feature->type,
-                'isActive' => (bool) $feature->is_active,
+                'is_active' => (bool) $feature->is_active,
             ];
         })->values();
         
@@ -87,7 +87,7 @@ class PlanController extends Controller
                 'name' => $feature->name,
                 'value' => null,
                 'type' => $feature->type === 'text' ? 'string' : $feature->type,
-                'isActive' => (bool) $feature->is_active,
+                'is_active' => (bool) $feature->is_active,
             ];
         })->values();
 
