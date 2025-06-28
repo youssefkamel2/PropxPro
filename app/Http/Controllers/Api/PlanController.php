@@ -26,7 +26,21 @@ class PlanController extends Controller
 
     // Public endpoint
     public function indexAdmin(): JsonResponse {
-        $plans = Plan::get();
+        $plans = Plan::all()->map(function ($plan) {
+            return [
+                'id' => $plan->id,
+                'name' => $plan->name,
+                'title' => $plan->title,
+                'description' => $plan->description,
+                'monthly_price' => $plan->monthly_price,
+                'annual_price' => $plan->annual_price,
+                'annual_savings' => $plan->annual_savings,
+                'is_popular' => (bool) $plan->is_popular,
+                'is_active' => (bool) $plan->is_active,
+                'created_at' => $plan->created_at,
+                'updated_at' => $plan->updated_at,
+            ];
+        });
         return $this->success($plans, 'Plans retrieved successfully');
     }
 
