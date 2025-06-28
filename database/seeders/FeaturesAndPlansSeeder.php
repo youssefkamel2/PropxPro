@@ -21,70 +21,70 @@ class FeaturesAndPlansSeeder extends Seeder
                 'name' => 'User Management',
                 'type' => 'boolean',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'role_based_access',
                 'name' => 'Role-Based Access Control',
                 'type' => 'boolean',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'api_access',
                 'name' => 'API Access',
                 'type' => 'boolean',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'advanced_analytics',
                 'name' => 'Advanced Analytics',
                 'type' => 'boolean',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'custom_branding',
                 'name' => 'Custom Branding',
                 'type' => 'boolean',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'priority_support',
                 'name' => 'Priority Support',
                 'type' => 'boolean',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'data_export',
                 'name' => 'Data Export',
                 'type' => 'boolean',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'backup_restore',
                 'name' => 'Backup & Restore',
                 'type' => 'boolean',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'white_label',
                 'name' => 'White Label Solution',
                 'type' => 'boolean',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'sso_integration',
                 'name' => 'SSO Integration',
                 'type' => 'boolean',
                 'category' => null,
-                'is_active' => true,
+                
             ],
 
             // Regular Features (category = null) - Text type
@@ -93,35 +93,35 @@ class FeaturesAndPlansSeeder extends Seeder
                 'name' => 'Storage Limit',
                 'type' => 'text',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'user_limit',
                 'name' => 'User Limit',
                 'type' => 'text',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'api_rate_limit',
                 'name' => 'API Rate Limit',
                 'type' => 'text',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'retention_period',
                 'name' => 'Data Retention Period',
                 'type' => 'text',
                 'category' => null,
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'support_response_time',
                 'name' => 'Support Response Time',
                 'type' => 'text',
                 'category' => null,
-                'is_active' => true,
+                
             ],
 
             // Additional Usage Charge Features (category = additional_usage_charge) - Text type only
@@ -130,28 +130,28 @@ class FeaturesAndPlansSeeder extends Seeder
                 'name' => 'Additional Storage Price per GB',
                 'type' => 'text',
                 'category' => 'additional_usage_charge',
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'additional_user_price',
                 'name' => 'Additional User Price',
                 'type' => 'text',
                 'category' => 'additional_usage_charge',
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'additional_api_call_price',
                 'name' => 'Additional API Call Price per 1000',
                 'type' => 'text',
                 'category' => 'additional_usage_charge',
-                'is_active' => true,
+                
             ],
             [
                 'key' => 'additional_retention_price',
                 'name' => 'Additional Retention Period Price per Month',
                 'type' => 'text',
                 'category' => 'additional_usage_charge',
-                'is_active' => true,
+                
             ],
         ];
 
@@ -169,7 +169,7 @@ class FeaturesAndPlansSeeder extends Seeder
                 'annual_savings' => 'Save 17%',
                 'is_popular' => false,
                 'description' => 'Perfect for small teams getting started',
-                'is_active' => true,
+                
             ],
             [
                 'name' => 'professional',
@@ -179,7 +179,7 @@ class FeaturesAndPlansSeeder extends Seeder
                 'annual_savings' => 'Save 17%',
                 'is_popular' => true,
                 'description' => 'Ideal for growing businesses',
-                'is_active' => true,
+                
             ],
             [
                 'name' => 'enterprise',
@@ -189,7 +189,7 @@ class FeaturesAndPlansSeeder extends Seeder
                 'annual_savings' => 'Save 17%',
                 'is_popular' => false,
                 'description' => 'For large organizations with advanced needs',
-                'is_active' => true,
+                
             ],
         ];
 
