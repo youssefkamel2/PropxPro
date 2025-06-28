@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseTrait;
+use App\Http\Resources\PlanResource;
 
 class PlanController extends Controller
 {
@@ -24,10 +25,14 @@ class PlanController extends Controller
         $this->middleware('permission:delete_plan')->only(['destroy']);
     }
 
-    // Public endpoint
+    // Admin endpoint
     public function indexAdmin(): JsonResponse {
-        $plans = Plan::get();
-        return $this->success($plans, 'Plans retrieved successfully');
+        $plans = Plan::all();
+
+        return $this->success(
+            PlanResource::collection($plans),
+            'All plans retrieved successfully'
+        );
     }
 
     public function indexPublic(): JsonResponse
@@ -141,7 +146,7 @@ class PlanController extends Controller
             }
             $plan->features()->sync($syncData);
         }
-        return $this->success($plan->load('features'), 'Plan created successfully', 201);
+        return $this->success(new PlanResource($plan->load('features')), 'Plan created successfully', 201);
     }
 
     public function show($id): JsonResponse
@@ -261,7 +266,7 @@ class PlanController extends Controller
         try {
             $plan->update(['is_active' => !$plan->is_active]);
 
-            return $this->success($plan, 'Plan status updated successfully');
+            return $this->success(new PlanResource($plan), 'Plan status updated successfully');
         } catch (\Exception $e) {
             return $this->error('Failed to toggle plan status: ' . $e->getMessage(), 500);
         }

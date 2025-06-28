@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseTrait;
+use App\Http\Resources\FeatureResource;
 
 class FeatureController extends Controller
 {
@@ -15,7 +16,8 @@ class FeatureController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:view_features')->only(['show']);
+        $this->middleware('auth:api')->except(['indexPublic', 'show']);
+        $this->middleware('permission:view_features')->only(['indexAdmin']);
         $this->middleware('permission:create_feature')->only(['store']);
         $this->middleware('permission:edit_feature')->only(['update']);
         $this->middleware('permission:toggle_feature_status')->only(['toggleStatus']);
@@ -23,10 +25,25 @@ class FeatureController extends Controller
     }
 
     // Public endpoint
-    public function index(): JsonResponse
+    public function indexPublic(): JsonResponse
+    {
+        $features = Feature::where('is_active', true)->get();
+
+        return $this->success(
+            FeatureResource::collection($features),
+            'Features retrieved successfully'
+        );
+    }
+
+    // Admin endpoint
+    public function indexAdmin(): JsonResponse
     {
         $features = Feature::all();
-        return $this->success($features, 'Features retrieved successfully');
+
+        return $this->success(
+            FeatureResource::collection($features),
+            'All features retrieved successfully'
+        );
     }
 
     public function store(Request $request): JsonResponse
@@ -41,7 +58,7 @@ class FeatureController extends Controller
             return $this->error($validator->errors()->first(), 422);
         }
         $feature = Feature::create($validator->validated());
-        return $this->success($feature, 'Feature created successfully', 201);
+        return $this->success(new FeatureResource($feature), 'Feature created successfully', 201);
     }
 
     public function show($id): JsonResponse
@@ -50,7 +67,7 @@ class FeatureController extends Controller
         if (!$feature) {
             return $this->error('Feature not found', 404);
         }
-        return $this->success($feature, 'Feature retrieved successfully');
+        return $this->success(new FeatureResource($feature), 'Feature retrieved successfully');
     }
 
     public function update(Request $request, $id): JsonResponse
@@ -68,7 +85,7 @@ class FeatureController extends Controller
             return $this->error($validator->errors()->first(), 422);
         }
         $feature->update($validator->validated());
-        return $this->success($feature, 'Feature updated successfully');
+        return $this->success(new FeatureResource($feature), 'Feature updated successfully');
     }
 
     // toggle status
@@ -82,9 +99,9 @@ class FeatureController extends Controller
         try {
             $feature->update(['is_active' => !$feature->is_active]);
 
-            return $this->success($feature, 'Feature status updated successfully');
+            return $this->success(new FeatureResource($feature), 'Feature status updated successfully');
         } catch (\Exception $e) {
-            return $this->error('Failed to toggle integration status: ' . $e->getMessage(), 500);
+            return $this->error('Failed to toggle feature status: ' . $e->getMessage(), 500);
         }
     }
 
