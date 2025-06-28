@@ -26,7 +26,6 @@ class IntegrationController extends Controller
         $this->middleware('permission:edit_integration')->only(['update']);
         $this->middleware('permission:delete_integration')->only(['destroy']);
         $this->middleware('permission:toggle_integration')->only(['toggleStatus']);
-        $this->middleware('permission:manage_integration_order')->only(['updateOrder']);
     }
 
     public function indexPublic(): JsonResponse

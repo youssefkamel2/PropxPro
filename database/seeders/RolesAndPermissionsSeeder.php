@@ -43,7 +43,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'edit_integration' => 'Can edit integration details',
             'delete_integration' => 'Can delete integrations',
             'toggle_integration' => 'Can activate/deactivate integrations',
-            'manage_integration_order' => 'Can manage integration display order',
         ];
 
         // Add feature permissions
