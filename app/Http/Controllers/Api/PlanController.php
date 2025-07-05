@@ -184,6 +184,7 @@ class PlanController extends Controller
             'description' => 'required|string',
             'title' => 'required|string',
             'is_popular' => 'sometimes|boolean',
+            'annual_savings' => 'required|numeric',
             'features' => 'nullable|array',
             'features.*.id' => 'required|exists:features,id',
             'features.*.value' => 'nullable',
@@ -222,7 +223,6 @@ class PlanController extends Controller
         if (!$plan) {
             return $this->error('Plan not found', 404);
         }
-        // Format features to exclude pivot and only show value
         $formatted = [
             'id' => $plan->id,
             'name' => $plan->name,
@@ -230,6 +230,7 @@ class PlanController extends Controller
             'annual_price' => $plan->annual_price,
             'description' => $plan->description,
             'title' => $plan->title,
+            'annual_savings' => $plan->annual_savings,
             'is_popular' => $plan->is_popular,
             'created_at' => $plan->created_at,
             'updated_at' => $plan->updated_at,
@@ -264,6 +265,7 @@ class PlanController extends Controller
             'annual_price' => 'sometimes|numeric',
             'description' => 'nullable|string',
             'title' => 'sometimes|string',
+            'annual_savings' => 'sometimes|numeric',
             'is_popular' => 'sometimes|boolean',
             'features' => 'nullable|array',
             'features.*.id' => 'required|exists:features,id',
@@ -294,13 +296,14 @@ class PlanController extends Controller
             }
             $plan->features()->sync($syncData);
         }
-        // Format features to exclude pivot and only show value as true/false for boolean
         $formatted = [
             'id' => $plan->id,
             'name' => $plan->name,
             'monthly_price' => $plan->monthly_price,
             'annual_price' => $plan->annual_price,
             'description' => $plan->description,
+            'title' => $plan->title,
+            'annual_savings' => $plan->annual_savings,
             'is_popular' => $plan->is_popular,
             'created_at' => $plan->created_at,
             'updated_at' => $plan->updated_at,
