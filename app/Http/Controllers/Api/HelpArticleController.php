@@ -13,6 +13,12 @@ class HelpArticleController extends Controller
 {
     use ResponseTrait;
 
+    public function index()
+    {
+        $articles = HelpArticle::all();
+        return $this->success($articles, 'Help articles retrieved successfully');
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
