@@ -6,8 +6,10 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PlanController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\FeatureController;
+use App\Http\Controllers\Api\HelpArticleController;
 use App\Http\Controllers\Api\IntegrationController;
 use App\Http\Controllers\Api\LegalDocumentController;
+use App\Http\Controllers\Api\HelpArticleImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,3 +96,31 @@ Route::get('plans', [PlanController::class, 'indexPublic']);
 
 Route::get('legal-documents/privacy-policy', [LegalDocumentController::class, 'getPrivacyPolicy']);
 Route::get('legal-documents/terms-of-service', [LegalDocumentController::class, 'getTermsOfService']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Route::prefix('help-articles')->group(function () {
+    Route::get('/', [HelpArticleController::class, 'index']);
+    Route::post('/', [HelpArticleController::class, 'store']);
+    Route::get('/{id}', [HelpArticleController::class, 'show']);
+    Route::put('/{id}', [HelpArticleController::class, 'update']);
+    Route::delete('/{id}', [HelpArticleController::class, 'destroy']);
+    
+    // Image routes
+    Route::post('/images/upload', [HelpArticleImageController::class, 'upload']);
+    Route::delete('/images/{id}', [HelpArticleImageController::class, 'destroy']);
+});
