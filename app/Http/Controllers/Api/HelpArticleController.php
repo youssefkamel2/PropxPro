@@ -13,11 +13,6 @@ class HelpArticleController extends Controller
 {
     use ResponseTrait;
 
-    public function __construct()
-    {
-        $this->middleware('auth:api')->except(['show']);
-    }
-
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
