@@ -22,7 +22,7 @@ class HelpArticleController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
+            'title' => 'required|unique:help_articles,title|string|max:255',
             'content' => 'required|string',
             'status' => 'sometimes|in:draft,published',
         ]);

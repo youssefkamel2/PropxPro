@@ -113,14 +113,14 @@ Route::get('legal-documents/terms-of-service', [LegalDocumentController::class, 
 
 
 
-Route::prefix('help-articles')->group(function () {
-    Route::get('/', [HelpArticleController::class, 'index']);
-    Route::post('/', [HelpArticleController::class, 'store']);
-    Route::get('/{id}', [HelpArticleController::class, 'show']);
-    Route::put('/{id}', [HelpArticleController::class, 'update']);
-    Route::delete('/{id}', [HelpArticleController::class, 'destroy']);
+// Route::prefix('help-articles')->group(function () {
+//     Route::get('/', [HelpArticleController::class, 'index']);
+//     Route::post('/', [HelpArticleController::class, 'store']);
+//     Route::get('/{id}', [HelpArticleController::class, 'show']);
+//     Route::put('/{id}', [HelpArticleController::class, 'update']);
+//     Route::delete('/{id}', [HelpArticleController::class, 'destroy']);
     
-    // Image routes
-    Route::post('/images/upload', [HelpArticleImageController::class, 'upload']);
-    Route::delete('/images/{id}', [HelpArticleImageController::class, 'destroy']);
-});
+//     // Image routes
+//     Route::post('/images/upload', [HelpArticleImageController::class, 'upload']);
+//     Route::delete('/images/{id}', [HelpArticleImageController::class, 'destroy']);
+// });
