@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\PlanController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\IntegrationController;
+use App\Http\Controllers\Api\LegalDocumentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,13 @@ Route::group(['middleware' => ['auth:api']], function () {
             Route::patch('/{plan}/toggle-status', [PlanController::class, 'toggleStatus']);
         });
 
+        // legal documents
+        Route::group(['prefix' => 'legal-documents'], function() {
+            Route::post('privacy-policy', [LegalDocumentController::class, 'updatePrivacyPolicy']);
+            Route::post('terms-of-service', [LegalDocumentController::class, 'updateTermsOfService']);
+
+        });
+
     });
 
 });
@@ -81,3 +89,8 @@ Route::get('integrations', [IntegrationController::class, 'indexPublic']);
 
 // Public plans listing
 Route::get('plans', [PlanController::class, 'indexPublic']);
+
+// Legal Documents
+
+Route::get('legal-documents/privacy-policy', [LegalDocumentController::class, 'getPrivacyPolicy']);
+Route::get('legal-documents/terms-of-service', [LegalDocumentController::class, 'getTermsOfService']);

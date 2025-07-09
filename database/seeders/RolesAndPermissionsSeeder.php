@@ -63,7 +63,19 @@ class RolesAndPermissionsSeeder extends Seeder
             'toggle_plan_status' => 'Can activate/deactivate plans',
         ];
 
-        $allPermissions = array_merge($adminManagementPermissions, $integrationPermissions, $featurePermissions, $planPermissions);
+        // Legal document permissions
+        $legalDocumentPermissions = [
+            'update_privacy_policy' => 'Can update privacy policy',
+            'update_terms_of_service' => 'Can update terms of service',
+        ];
+
+        $allPermissions = array_merge(
+            $adminManagementPermissions,
+            $integrationPermissions,
+            $featurePermissions,
+            $planPermissions,
+            $legalDocumentPermissions
+        );
 
         foreach ($allPermissions as $permission => $description) {
             Permission::create([
