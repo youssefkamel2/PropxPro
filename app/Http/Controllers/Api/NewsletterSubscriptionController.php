@@ -45,7 +45,7 @@ class NewsletterSubscriptionController extends Controller
         return $this->success($subs, 'Subscribers fetched successfully');
     }
 
-    // Protected: remove (deactivate) subscriber
+    // Protected: remove subscriber
     public function destroy($newsletterSubscription)
     {
         $newsletterSubscription = NewsletterSubscription::find($newsletterSubscription);
