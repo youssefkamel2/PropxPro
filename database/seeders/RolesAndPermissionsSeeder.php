@@ -69,12 +69,29 @@ class RolesAndPermissionsSeeder extends Seeder
             'update_terms_of_service' => 'Can update terms of service',
         ];
 
+        // Blog management permissions
+        $blogPermissions = [
+            'view_blogs' => 'Can view blogs',
+            'create_blog' => 'Can create blogs',
+            'edit_blog' => 'Can edit blogs',
+            'delete_blog' => 'Can delete blogs',
+            'toggle_blog_status' => 'Can activate/deactivate blogs',
+        ];
+
+        // Newsletter subscriber management permissions
+        $newsletterPermissions = [
+            'view_newsletter_subscribers' => 'Can view newsletter subscribers',
+            'remove_newsletter_subscriber' => 'Can remove newsletter subscribers',
+        ];
+
         $allPermissions = array_merge(
             $adminManagementPermissions,
             $integrationPermissions,
             $featurePermissions,
             $planPermissions,
-            $legalDocumentPermissions
+            $legalDocumentPermissions,
+            $blogPermissions,
+            $newsletterPermissions
         );
 
         foreach ($allPermissions as $permission => $description) {

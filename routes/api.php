@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\PlanController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\FeatureController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Api\HelpArticleController;
 use App\Http\Controllers\Api\IntegrationController;
 use App\Http\Controllers\Api\LegalDocumentController;
 use App\Http\Controllers\Api\HelpArticleImageController;
+use App\Http\Controllers\Api\NewsletterSubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,6 +84,24 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         });
 
+        // Blog management
+
+        // Route::apiResource('blogs', BlogController::class);
+        Route::group(['prefix' => 'blogs'], function() {
+            Route::get('/', [BlogController::class, 'index']);
+            Route::post('/', [BlogController::class, 'store']);
+            Route::get('/{blog}', [BlogController::class, 'show']);
+            Route::post('/{blog}', [BlogController::class, 'update']);
+            Route::delete('/{blog}', [BlogController::class, 'destroy']);
+            Route::patch('/{blog}/toggle-active', [BlogController::class, 'toggleActive']);
+        });
+
+        // Newsletter subscriber management
+        Route::group(['prefix' => 'newsletter'], function() {
+            Route::get('/', [NewsletterSubscriptionController::class, 'index']);
+            Route::delete('/{newsletterSubscription}', [NewsletterSubscriptionController::class, 'destroy']);
+            
+        });
     });
 
 });
@@ -96,6 +116,12 @@ Route::get('plans', [PlanController::class, 'indexPublic']);
 
 Route::get('legal-documents/privacy-policy', [LegalDocumentController::class, 'getPrivacyPolicy']);
 Route::get('legal-documents/terms-of-service', [LegalDocumentController::class, 'getTermsOfService']);
+
+// Public newsletter subscribe
+Route::post('newsletter/subscribe', [NewsletterSubscriptionController::class, 'subscribe']);
+
+// Public landing page blogs
+Route::get('landing/blogs', [BlogController::class, 'publicIndex']);
 
 
 
