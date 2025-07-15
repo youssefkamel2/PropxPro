@@ -157,4 +157,10 @@ class BlogController extends Controller
             'trending' => BlogResource::collection($trending),
         ], 'Landing blogs fetched successfully');
     }
+
+    public function activeBlogs()
+    {
+        $blogs = Blog::where('is_active', true)->latest()->get();
+        return $this->success(BlogResource::collection($blogs), 'Active blogs fetched successfully');
+    }
 } 

@@ -120,6 +120,8 @@ Route::get('legal-documents/terms-of-service', [LegalDocumentController::class, 
 Route::post('newsletter/subscribe', [NewsletterSubscriptionController::class, 'subscribe']);
 
 // Public landing page blogs
+// api to gel all active blogs
+Route::get('landing/blogs/active', [BlogController::class, 'activeBlogs']);
 Route::get('landing/blogs', [BlogController::class, 'publicIndex']);
 Route::get('landing/blogs/{blog}', [BlogController::class, 'show']);
 
