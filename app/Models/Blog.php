@@ -17,6 +17,7 @@ class Blog extends Model
         'mark_as_hero',
         'is_active',
         'created_by',
+        'tags',
     ];
 
     public function author()
