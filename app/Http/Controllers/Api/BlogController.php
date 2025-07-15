@@ -38,7 +38,7 @@ class BlogController extends Controller
             'category' => 'required|in:trending,guides,insights',
             'content' => 'required|string',
             'tags' => 'sometimes|array',
-            'tags.*' => 'string|max:50',
+            'tags.*' => 'string',
             'mark_as_hero' => 'sometimes|boolean',
             'is_active' => 'sometimes|boolean',
         ]);
@@ -90,7 +90,7 @@ class BlogController extends Controller
             'category' => 'sometimes|in:trending,guides,insights',
             'content' => 'sometimes|string',
             'tags' => 'sometimes|array',
-            'tags.*' => 'string|max:50',
+            'tags.*' => 'string',
             'mark_as_hero' => 'sometimes|boolean',
             'is_active' => 'sometimes|boolean',
         ]);
