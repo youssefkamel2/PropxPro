@@ -90,7 +90,6 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::group(['prefix' => 'blogs'], function() {
             Route::get('/', [BlogController::class, 'index']);
             Route::post('/', [BlogController::class, 'store']);
-            Route::get('/{blog}', [BlogController::class, 'show']);
             Route::post('/{blog}', [BlogController::class, 'update']);
             Route::delete('/{blog}', [BlogController::class, 'destroy']);
             Route::patch('/{blog}/toggle-active', [BlogController::class, 'toggleActive']);
@@ -122,6 +121,7 @@ Route::post('newsletter/subscribe', [NewsletterSubscriptionController::class, 's
 
 // Public landing page blogs
 Route::get('landing/blogs', [BlogController::class, 'publicIndex']);
+Route::get('landing/blogs/{blog}', [BlogController::class, 'show']);
 
 
 

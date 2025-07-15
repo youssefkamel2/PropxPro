@@ -17,7 +17,7 @@ class BlogController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:view_blogs')->only(['index', 'show']);
+        $this->middleware('permission:view_blogs')->only(['index']);
         $this->middleware('permission:create_blog')->only('store');
         $this->middleware('permission:edit_blog')->only('update');
         $this->middleware('permission:delete_blog')->only('destroy');
