@@ -29,6 +29,21 @@ class Blog extends Model
         return $this->hasMany(NewsletterEmailLog::class);
     }
 
+    public function setTagsAttribute($value)
+    {
+        if (is_array($value)) {
+            $this->attributes['tags'] = implode(',', $value);
+        } else {
+            $this->attributes['tags'] = $value;
+        }
+    }
+
+    public function getTagsAttribute($value)
+    {
+        if (!$value) return [];
+        return array_filter(array_map('trim', explode(',', $value)));
+    }
+
     public function getCoverPhotoUrlAttribute()
     {
         return $this->cover_photo ? asset('storage/' . $this->cover_photo) : null;

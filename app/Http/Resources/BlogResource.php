@@ -15,6 +15,7 @@ class BlogResource extends JsonResource
             'cover_photo_url' => $this->cover_photo_url,
             'category' => $this->category,
             'content' => $this->content,
+            'tags' => $this->tags,
             // return is active as true or false
             'mark_as_hero' => $this->mark_as_hero ? true : false,
             'is_active' => $this->is_active ? true : false,

@@ -16,6 +16,7 @@ class CreateBlogsTable extends Migration
             $table->longText('content');
             $table->boolean('mark_as_hero')->default(false);
             $table->boolean('is_active')->default(true);
+            $table->string('tags')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->timestamps();
 

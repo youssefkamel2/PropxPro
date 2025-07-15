@@ -37,6 +37,8 @@ class BlogController extends Controller
             'cover_photo' => 'required|image|max:4096',
             'category' => 'required|in:trending,guides,insights',
             'content' => 'required|string',
+            'tags' => 'sometimes|array',
+            'tags.*' => 'string|max:50',
             'mark_as_hero' => 'sometimes|boolean',
             'is_active' => 'sometimes|boolean',
         ]);
@@ -87,6 +89,8 @@ class BlogController extends Controller
             'cover_photo' => 'sometimes|image|max:4096',
             'category' => 'sometimes|in:trending,guides,insights',
             'content' => 'sometimes|string',
+            'tags' => 'sometimes|array',
+            'tags.*' => 'string|max:50',
             'mark_as_hero' => 'sometimes|boolean',
             'is_active' => 'sometimes|boolean',
         ]);
