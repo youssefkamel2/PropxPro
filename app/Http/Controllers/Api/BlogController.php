@@ -69,9 +69,10 @@ class BlogController extends Controller
 
     public function show($blog)
     {
+        // make sure that blog is active
         $blog = Blog::with('author')->find($blog);
-        if (!$blog) {
-            return $this->error('Blog not found', 404);
+        if (!$blog || !$blog->is_active) {
+            return $this->error('Blog not found or inactive', 404);
         }
 
         return $this->success(new BlogResource($blog), 'Blog fetched successfully');
