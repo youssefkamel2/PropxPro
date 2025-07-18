@@ -18,6 +18,7 @@ class Blog extends Model
         'is_active',
         'created_by',
         'tags',
+        'headings',
     ];
 
     public function author()
@@ -43,6 +44,21 @@ class Blog extends Model
     {
         if (!$value) return [];
         return array_filter(array_map('trim', explode(',', $value)));
+    }
+
+    public function setHeadingsAttribute($value)
+    {
+        if (is_array($value)) {
+            $this->attributes['headings'] = json_encode($value);
+        } else {
+            $this->attributes['headings'] = $value;
+        }
+    }
+
+    public function getHeadingsAttribute($value)
+    {
+        if (!$value) return [];
+        return json_decode($value, true) ?: [];
     }
 
     public function getCoverPhotoUrlAttribute()

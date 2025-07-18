@@ -38,7 +38,8 @@ class BlogController extends Controller
             'category' => 'required|in:trending,guides,insights',
             'content' => 'required|string',
             'tags' => 'sometimes|array',
-            'tags.*' => 'string',
+            'tags.*' => 'string|max:50',
+            'headings' => 'sometimes',
             'mark_as_hero' => 'sometimes|boolean',
             'is_active' => 'sometimes|boolean',
         ]);
@@ -47,6 +48,11 @@ class BlogController extends Controller
         }
         try {
             $data = $validator->validated();
+            if (isset($data['headings'])) {
+                if (is_string($data['headings'])) {
+                    $data['headings'] = json_decode($data['headings'], true);
+                }
+            }
             $data['created_by'] = Auth::id();
             if ($request->hasFile('cover_photo')) {
                 $data['cover_photo'] = $request->file('cover_photo')->store('blogs', 'public');
@@ -91,7 +97,8 @@ class BlogController extends Controller
             'category' => 'sometimes|in:trending,guides,insights',
             'content' => 'sometimes|string',
             'tags' => 'sometimes|array',
-            'tags.*' => 'string',
+            'tags.*' => 'string|max:50',
+            'headings' => 'sometimes',
             'mark_as_hero' => 'sometimes|boolean',
             'is_active' => 'sometimes|boolean',
         ]);
@@ -100,6 +107,11 @@ class BlogController extends Controller
         }
         try {
             $data = $validator->validated();
+            if (isset($data['headings'])) {
+                if (is_string($data['headings'])) {
+                    $data['headings'] = json_decode($data['headings'], true);
+                }
+            }
             if ($request->hasFile('cover_photo')) {
                 // Delete old image
                 if ($blog->cover_photo) {
@@ -167,5 +179,18 @@ class BlogController extends Controller
     {
         $blogs = Blog::where('is_active', true)->latest()->get();
         return $this->success(BlogResource::collection($blogs), 'Active blogs fetched successfully');
+    }
+
+    public function uploadContentImage(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image|max:4096',
+        ]);
+        if ($validator->fails()) {
+            return $this->error($validator->errors()->first(), 422);
+        }
+        $path = $request->file('image')->store('blog-content', 'public');
+        $url = asset('storage/' . $path);
+        return $this->success(['url' => $url], 'Image uploaded successfully');
     }
 } 

@@ -16,6 +16,7 @@ class BlogResource extends JsonResource
             'category' => $this->category,
             'content' => $this->content,
             'tags' => $this->tags,
+            'headings' => $this->headings,
             // return is active as true or false
             'mark_as_hero' => $this->mark_as_hero ? true : false,
             'is_active' => $this->is_active ? true : false,

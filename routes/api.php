@@ -125,6 +125,9 @@ Route::get('landing/blogs/active', [BlogController::class, 'activeBlogs']);
 Route::get('landing/blogs', [BlogController::class, 'publicIndex']);
 Route::get('landing/blogs/{blog}', [BlogController::class, 'show']);
 
+// Public blog content image upload
+Route::post('blogs/upload-image', [BlogController::class, 'uploadContentImage']);
+
 
 
 
