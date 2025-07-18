@@ -85,12 +85,11 @@ Route::group(['middleware' => ['auth:api']], function () {
         });
 
         // Blog management
-
-        // Route::apiResource('blogs', BlogController::class);
         Route::group(['prefix' => 'blogs'], function() {
             Route::get('/', [BlogController::class, 'index']);
             Route::post('/', [BlogController::class, 'store']);
             Route::post('/{blog}', [BlogController::class, 'update']);
+            Route::post('/upload-image', [BlogController::class, 'uploadContentImage']);
             Route::delete('/{blog}', [BlogController::class, 'destroy']);
             Route::patch('/{blog}/toggle-active', [BlogController::class, 'toggleActive']);
         });
@@ -124,10 +123,6 @@ Route::post('newsletter/subscribe', [NewsletterSubscriptionController::class, 's
 Route::get('landing/blogs/active', [BlogController::class, 'activeBlogs']);
 Route::get('landing/blogs', [BlogController::class, 'publicIndex']);
 Route::get('landing/blogs/{blog}', [BlogController::class, 'show']);
-
-// Public blog content image upload
-Route::post('blogs/upload-image', [BlogController::class, 'uploadContentImage']);
-
 
 
 
