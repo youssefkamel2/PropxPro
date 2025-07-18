@@ -24,6 +24,7 @@ class BlogResource extends JsonResource
             'created_by_name' => $this->author->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'emails_sent_count' => $this->emailLogs()->where('status', 'sent')->count(),
         ];
     }
 } 
