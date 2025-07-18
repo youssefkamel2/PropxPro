@@ -89,7 +89,7 @@ Route::group(['middleware' => ['auth:api']], function () {
             Route::get('/', [BlogController::class, 'index']);
             Route::post('/', [BlogController::class, 'store']);
             Route::post('/{blog}', [BlogController::class, 'update']);
-            Route::post('/upload-image', [BlogController::class, 'uploadContentImage']);
+            Route::post('/images/upload', [BlogController::class, 'uploadContentImage']);
             Route::delete('/{blog}', [BlogController::class, 'destroy']);
             Route::patch('/{blog}/toggle-active', [BlogController::class, 'toggleActive']);
         });
