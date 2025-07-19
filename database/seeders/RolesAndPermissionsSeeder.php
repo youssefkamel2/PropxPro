@@ -84,6 +84,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'remove_newsletter_subscriber' => 'Can remove newsletter subscribers',
         ];
 
+        // Request demo management permissions
+        $requestDemoPermissions = [
+            'view_request_demos' => 'Can view all demo requests',
+        ];
+
         $allPermissions = array_merge(
             $adminManagementPermissions,
             $integrationPermissions,
@@ -91,7 +96,8 @@ class RolesAndPermissionsSeeder extends Seeder
             $planPermissions,
             $legalDocumentPermissions,
             $blogPermissions,
-            $newsletterPermissions
+            $newsletterPermissions,
+            $requestDemoPermissions
         );
 
         foreach ($allPermissions as $permission => $description) {

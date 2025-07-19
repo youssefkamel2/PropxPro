@@ -10,6 +10,7 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "spatie/laravel-google-calendar": "^3.8",
         "spatie/laravel-permission": "^6.19",
         "tymon/jwt-auth": "^2.2"
     },

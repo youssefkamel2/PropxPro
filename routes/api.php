@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\PlanController;
@@ -9,9 +10,11 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\HelpArticleController;
 use App\Http\Controllers\Api\IntegrationController;
+use App\Http\Controllers\Api\RequestDemoController;
 use App\Http\Controllers\Api\LegalDocumentController;
 use App\Http\Controllers\Api\HelpArticleImageController;
 use App\Http\Controllers\Api\NewsletterSubscriptionController;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,6 +103,9 @@ Route::group(['middleware' => ['auth:api']], function () {
             Route::delete('/{newsletterSubscription}', [NewsletterSubscriptionController::class, 'destroy']);
             
         });
+
+        Route::get('/request-demos', [RequestDemoController::class, 'index']);
+
     });
 
 });
@@ -123,19 +129,40 @@ Route::get('landing/blogs/active', [BlogController::class, 'activeBlogs']);
 Route::get('landing/blogs', [BlogController::class, 'publicIndex']);
 Route::get('landing/blogs/{blog}', [BlogController::class, 'show']);
 
+// Public request demo endpoint
+Route::post('request-demo', [RequestDemoController::class, 'store']);
 
 
 
+// Route::get('/google-calendar/oauth-callback', function (Request $request) {
+//     $client = new Google\Client();
+//     $client->setAuthConfig(storage_path('app/google-calendar/oauth-credentials.json'));
+//     $client->addScope(Google\Service\Calendar::CALENDAR_EVENTS);
+//     $client->setRedirectUri('http://localhost:8000/api/google-calendar/oauth-callback');
+    
+//     try {
+//         if (!$request->has('code')) {
+//             throw new \Exception('Missing authorization code');
+//         }
 
+//         $token = $client->fetchAccessTokenWithAuthCode($request->code);
+        
+//         if (isset($token['error'])) {
+//             Log::error('Google OAuth Error', $token);
+//             return response()->json(['error' => $token['error_description'] ?? 'Failed to get access token'], 400);
+//         }
 
-
-
-
-
-
-
-
-
+//         Storage::put('google-calendar/oauth-token.json', json_encode($token));
+        
+//         return response()->json([
+//             'success' => true,
+//             'message' => 'Successfully authenticated!'
+//         ]);
+//     } catch (\Exception $e) {
+//         Log::error('Google Auth Exception: ' . $e->getMessage());
+//         return response()->json(['error' => $e->getMessage()], 500);
+//     }
+// });
 
 
 // Route::prefix('help-articles')->group(function () {
