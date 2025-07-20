@@ -16,7 +16,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: #333 !important;
             background-color: #f8fafc;
             margin: 0;
             padding: 0;
@@ -37,7 +37,7 @@
         }
         
         .logo {
-            color: #ffffff;
+            color: #ffffff !important;
             font-size: 28px;
             font-weight: 700;
             margin-bottom: 10px;
@@ -45,7 +45,7 @@
         }
         
         .header-subtitle {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.9) !important;
             font-size: 14px;
             font-weight: 400;
         }
@@ -66,7 +66,7 @@
         .category-badge {
             display: inline-block;
             background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            color: #ffffff;
+            color: #ffffff !important;
             padding: 6px 16px;
             border-radius: 20px;
             font-size: 12px;
@@ -91,7 +91,7 @@
         .blog-title {
             font-size: 26px;
             font-weight: 700;
-            color: #2d3748;
+            color: #2d3748 !important;
             margin-bottom: 15px;
             line-height: 1.3;
         }
@@ -123,32 +123,32 @@
             border: 1px solid #e2e8f0;
             font-size: 13px;
             font-weight: 500;
-            color: #4a5568;
+            color: #4a5568 !important;
             min-width: fit-content;
         }
         
         .meta-icon {
             width: 16px;
             height: 16px;
-            color: #667eea;
+            color: #667eea !important;
             flex-shrink: 0;
         }
         
         .meta-date {
-            color: #2d3748;
+            color: #2d3748 !important;
             font-weight: 600;
         }
         
         .meta-read-time {
-            color: #38a169;
+            color: #38a169 !important;
         }
         
         .meta-author {
-            color: #805ad5;
+            color: #805ad5 !important;
         }
         
         .blog-excerpt {
-            color: #4a5568;
+            color: #4a5568 !important;
             font-size: 16px;
             line-height: 1.7;
             margin-bottom: 30px;
@@ -157,7 +157,7 @@
         .cta-button {
             display: inline-block;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff;
+            color: #ffffff !important;
             padding: 16px 32px;
             text-decoration: none;
             border-radius: 8px;
@@ -183,7 +183,7 @@
         .tags-label {
             font-size: 14px;
             font-weight: 600;
-            color: #718096;
+            color: #718096 !important;
             margin-bottom: 10px;
         }
         
@@ -295,7 +295,7 @@
         }
         
         .footer-link {
-            color: #a0aec0;
+            color: #a0aec0 !important;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -305,24 +305,10 @@
         .footer-link:hover {
             color: #667eea;
         }
-        
-        .unsubscribe {
-            color: #a0aec0;
-            font-size: 13px;
-            text-decoration: none;
-            padding: 8px 16px;
-            border: 1px solid #4a5568;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .unsubscribe:hover {
-            border-color: #667eea;
-            color: #667eea;
-        }
+
         
         .footer-copyright {
-            color: #718096;
+            color: #718096 !important;
             font-size: 12px;
             margin-top: 20px;
             line-height: 1.5;
@@ -491,13 +477,6 @@
                     Thanks for being part of our community! 🚀
                 </div>
                 
-                <div class="social-links">
-                    <a href="#" class="social-link" title="Website">🌐</a>
-                    <a href="#" class="social-link" title="LinkedIn">💼</a>
-                    <a href="#" class="social-link" title="Twitter">🐦</a>
-                    <a href="#" class="social-link" title="Facebook">📘</a>
-                </div>
-                
                 <div class="footer-divider"></div>
                 
                 <div class="footer-bottom">
@@ -507,7 +486,6 @@
                         <a href="#" class="footer-link">Contact Us</a>
                     </div>
                     
-                    <a href="#" class="unsubscribe">Unsubscribe</a>
                 </div>
                 
                 <div class="footer-copyright">
