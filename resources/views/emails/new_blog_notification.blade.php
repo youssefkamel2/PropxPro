@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ $blog->title }}</title>
+    <title>{{ $blog->title }} - PropX Pro</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
@@ -15,521 +13,311 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            padding: 40px 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8fafc;
         }
         
         .email-container {
-            max-width: 650px;
+            max-width: 600px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(30px);
-            border-radius: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            position: relative;
+            background-color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         
-        .email-container::before {
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1.5" fill="white" opacity="0.1"/><circle cx="40" cy="80" r="1" fill="white" opacity="0.1"/></svg>');
+            animation: float 20s ease-in-out infinite;
         }
         
-        .hero-section {
-            position: relative;
-            height: 500px;
-            overflow: hidden;
-        }
-        
-        .hero-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.8);
-        }
-        
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, 
-                rgba(102,126,234,0.9) 0%, 
-                rgba(118,75,162,0.8) 30%,
-                rgba(240,147,251,0.7) 60%,
-                rgba(0,0,0,0.6) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 60px 40px;
-        }
-        
-        .floating-logo {
-            position: absolute;
-            top: 30px;
-            left: 40px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            padding: 12px 24px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
         
         .logo {
-            color: #ffffff;
-            font-size: 20px;
-            font-weight: 800;
-            text-decoration: none;
-            letter-spacing: -0.5px;
-        }
-        
-        .category-pill {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            color: #ffffff;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 11px;
+            color: white;
+            font-size: 28px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 10px;
         }
         
-        .hero-title {
-            font-size: 36px;
-            font-weight: 900;
-            color: #ffffff;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            max-width: 500px;
-        }
-        
-        .hero-description {
-            font-size: 18px;
+        .tagline {
             color: rgba(255, 255, 255, 0.9);
-            line-height: 1.5;
-            margin-bottom: 32px;
-            max-width: 400px;
-            font-weight: 400;
-        }
-        
-        .hero-button {
-            background: rgba(255, 255, 255, 1);
-            color: #667eea;
-            padding: 16px 32px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 15px;
-            transition: all 0.4s ease;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(102,126,234,0.1), transparent);
-            transition: left 0.6s;
-        }
-        
-        .hero-button:hover::before {
-            left: 100%;
-        }
-        
-        .hero-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            color: #764ba2;
-        }
-        
-        .glass-content {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 50px 40px;
-            position: relative;
-        }
-        
-        .author-section {
-            display: flex;
-            align-items: center;
-            margin-bottom: 40px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        
-        .author-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-weight: 800;
-            font-size: 20px;
-            margin-right: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .author-info {
-            flex: 1;
-        }
-        
-        .author-name {
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-        
-        .publish-date {
-            color: rgba(255, 255, 255, 0.7);
             font-size: 14px;
-            font-weight: 400;
-        }
-        
-        .reading-stats {
-            display: flex;
-            gap: 20px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 13px;
-        }
-        
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .content-preview {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 17px;
-            line-height: 1.7;
-            margin-bottom: 40px;
-            font-weight: 400;
-        }
-        
-        .action-section {
-            text-align: center;
-            margin: 50px 0;
-        }
-        
-        .main-cta {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #f1f5f9;
-            padding: 20px 48px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 16px;
-            display: inline-block;
             position: relative;
-            transition: all 0.4s ease;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            z-index: 2;
         }
         
-        .main-cta::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+        .content {
+            padding: 40px 30px;
         }
         
-        .main-cta:hover::after {
-            width: 300px;
-            height: 300px;
-        }
-        
-        .main-cta:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 50px rgba(102, 126, 234, 0.6);
-        }
-        
-        .tags-cloud {
-            margin: 40px 0;
-            text-align: center;
-        }
-        
-        .tags-title {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-        }
-        
-        .tag-item {
+        .blog-badge {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            color: rgba(255, 255, 255, 0.9);
-            padding: 8px 16px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 8px 20px;
             border-radius: 25px;
             font-size: 12px;
-            font-weight: 500;
-            margin: 4px 6px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
         }
         
-        .tag-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-        }
-        
-        .glass-footer {
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(20px);
-            padding: 50px 40px;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        
-        .footer-title {
-            color: #ffffff;
-            font-size: 24px;
+        .blog-title {
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 12px;
+            color: #1a202c;
+            margin-bottom: 15px;
+            line-height: 1.3;
         }
         
-        .footer-subtitle {
-            color: rgba(255, 255, 255, 0.7);
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .blog-cover {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .blog-excerpt {
+            color: #4a5568;
             font-size: 16px;
+            line-height: 1.7;
             margin-bottom: 30px;
         }
         
-        .social-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
-        }
-        
-        .social-btn {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 35px;
             text-decoration: none;
-            font-size: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
         
-        .social-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
         
-        .footer-links {
+        .tags-section {
             margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 25px;
+            border-top: 1px solid #e2e8f0;
         }
         
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
+        .tags-label {
             font-size: 14px;
-            margin: 0 20px;
-            transition: color 0.3s ease;
+            color: #718096;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
         
-        .footer-links a:hover {
-            color: #ffffff;
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         
-        /* Responsive Design */
-        @media (max-width: 650px) {
-            body {
-                padding: 20px 10px;
-            }
-            
+        .tag {
+            background: #f7fafc;
+            color: #4a5568;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .footer {
+            background: #f8fafc;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .social-links {
+            margin-bottom: 20px;
+        }
+        
+        .social-link {
+            display: inline-block;
+            margin: 0 10px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: scale(1.1);
+        }
+        
+        .unsubscribe {
+            color: #718096;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .unsubscribe a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .company-info {
+            color: #a0aec0;
+            font-size: 11px;
+        }
+        
+        @media (max-width: 480px) {
             .email-container {
-                border-radius: 20px;
+                margin: 0 10px;
             }
             
-            .hero-section {
-                height: 400px;
+            .header,
+            .content,
+            .footer {
+                padding: 20px;
             }
             
-            .hero-overlay {
-                padding: 40px 25px;
+            .blog-title {
+                font-size: 24px;
             }
             
-            .hero-title {
-                font-size: 28px;
-            }
-            
-            .glass-content, .glass-footer {
-                padding: 40px 25px;
-            }
-            
-            .floating-logo {
-                top: 20px;
-                left: 25px;
-                padding: 10px 16px;
-            }
-            
-            .author-section {
+            .blog-meta {
                 flex-direction: column;
-                text-align: center;
-                gap: 15px;
+                gap: 10px;
+                align-items: flex-start;
             }
             
-            .social-buttons {
-                flex-wrap: wrap;
-            }
-            
-            .footer-links a {
+            .cta-button {
                 display: block;
-                margin: 10px 0;
+                text-align: center;
+                margin: 0 auto;
             }
-        }
-        
-        /* Animation for glass effects */
-        @keyframes shimmer {
-            0% { background-position: -200px 0; }
-            100% { background-position: 200px 0; }
-        }
-        
-        .glass-shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            background-size: 200px 100%;
-            animation: shimmer 3s infinite;
         }
     </style>
 </head>
 <body>
     <div class="email-container">
-        <!-- Hero Section with Glass Morphism -->
-        <div class="hero-section">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">PropX Pro</div>
+            <div class="tagline">Your Premier Property Platform</div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="blog-badge">
+                {{ ucfirst($blog->category) }} • New Blog Post
+            </div>
+            
+            <h1 class="blog-title">{{ $blog->title }}</h1>
+            
+            <div class="blog-meta">
+                <div class="meta-item">
+                    <span>📝</span>
+                    <span>By {{ $blog->author->name ?? 'PropX Team' }}</span>
+                </div>
+                <div class="meta-item">
+                    <span>📅</span>
+                    <span>{{ $blog->created_at->format('M d, Y') }}</span>
+                </div>
+                <div class="meta-item">
+                    <span>⏱️</span>
+                    <span>{{ ceil(str_word_count(strip_tags($blog->content)) / 200) }} min read</span>
+                </div>
+            </div>
+            
             @if($blog->cover_photo)
-            <img src="{{ asset('storage/' . $blog->cover_photo) }}" alt="{{ $blog->title }}" class="hero-image">
+            <img src="{{ asset('storage/' . $blog->cover_photo) }}" alt="{{ $blog->title }}" class="blog-cover">
             @endif
             
-            <div class="hero-overlay">
-                <!-- Floating Logo -->
-                <div class="floating-logo">
-                    <a href="{{ url('/') }}" class="logo">PropxPro</a>
-                </div>
-                
-                <!-- Content -->
-                <div class="category-pill">{{ ucfirst($blog->category) }}</div>
-                <h1 class="hero-title">{{ $blog->title }}</h1>
-                <p class="hero-description">
-                    {!! \Illuminate\Support\Str::limit(strip_tags($blog->content), 140) !!}...
-                </p>
-                <a href="{{ url('/blog/' . $blog->id) }}" class="hero-button" target="_blank">
-                    Explore Article ✨
-                </a>
-            </div>
-        </div>
-        
-        <!-- Glass Content Section -->
-        <div class="glass-content">
-            <!-- Author Section -->
-            <div class="author-section">
-                <div class="author-avatar">
-                    {{ substr($blog->author->name ?? 'A', 0, 1) }}
-                </div>
-                <div class="author-info">
-                    <div class="author-name">{{ $blog->author->name ?? 'Admin Team' }}</div>
-                    <div class="publish-date">{{ $blog->created_at->format('M d, Y') }}</div>
-                </div>
-                <div class="reading-stats">
-                    <div class="stat-item">
-                        <span>⏱️</span>
-                        <span>{{ ceil(str_word_count(strip_tags($blog->content)) / 200) }} min</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>📖</span>
-                        <span>{{ str_word_count(strip_tags($blog->content)) }} words</span>
-                    </div>
-                </div>
+            <div class="blog-excerpt">
+                {{ Str::limit(strip_tags($blog->content), 250, '...') }}
             </div>
             
-            <!-- Content Preview -->
-            <div class="content-preview">
-                {!! \Illuminate\Support\Str::limit(strip_tags($blog->content), 320) !!}...
-            </div>
-            
-            <!-- Main CTA -->
-            <div class="action-section">
-                <a href="{{ url('/blog/' . $blog->id) }}" class="main-cta" target="_blank">
-                    🚀 Read Complete Article
+            <div style="text-align: center;">
+                <a href="https://propx-pro.vercel.app/blog/post/{{ $blog->id }}" class="cta-button">
+                    Read Full Article →
                 </a>
             </div>
             
-            <!-- Tags Cloud -->
             @if($blog->tags && count($blog->tags) > 0)
-            <div class="tags-cloud">
-                <div class="tags-title">Related Topics</div>
-                @foreach($blog->tags as $tag)
-                <span class="tag-item"># {{ $tag }}</span>
-                @endforeach
+            <div class="tags-section">
+                <div class="tags-label">Topics:</div>
+                <div class="tags">
+                    @foreach($blog->tags as $tag)
+                    <span class="tag">#{{ $tag }}</span>
+                    @endforeach
+                </div>
             </div>
             @endif
         </div>
         
-        <!-- Glass Footer -->
-        <div class="glass-footer">
-            <h3 class="footer-title">Stay Connected</h3>
-            <p class="footer-subtitle">Join our community of real estate innovators</p>
-            
-            <!-- Social Buttons -->
-            <div class="social-buttons">
-                <a href="#" class="social-btn">📧</a>
-                <a href="#" class="social-btn">🌐</a>
-                <a href="#" class="social-btn">💼</a>
-                <a href="#" class="social-btn">📱</a>
-                <a href="#" class="social-btn">🔗</a>
+        <!-- Footer -->
+        <div class="footer">
+            <div class="social-links">
+                <a href="#" class="social-link">f</a>
+                <a href="#" class="social-link">t</a>
+                <a href="#" class="social-link">in</a>
+                <a href="#" class="social-link">ig</a>
             </div>
             
-            <!-- Footer Links -->
-            <div class="footer-links">
-                <a href="{{ url('/') }}">Visit Website</a>
-                <a href="{{ url('/blog') }}">All Articles</a>
-                <a href="{{ url('/about') }}">About Us</a>
-                <a href="{{ url('/contact') }}">Contact</a>
+            <div class="unsubscribe">
+                Don't want to receive these emails? 
+                <a href="#">Unsubscribe here</a>
+            </div>
+            
+            <div class="company-info">
+                © 2025 PropX Pro. All rights reserved.<br>
+                Your trusted partner in property solutions.
             </div>
         </div>
     </div>
