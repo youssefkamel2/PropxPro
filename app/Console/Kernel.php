@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         // log anything to know when the command runs
         Log::info('Running demos:check-status command');
-        $schedule->command('demos:check-status')->hourly();
+        $schedule->command('demos:check-status')->everyMinute();
 
     }
 
