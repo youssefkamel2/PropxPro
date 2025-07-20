@@ -97,24 +97,54 @@
         }
         
         .blog-meta {
+            background: linear-gradient(135deg, #f8fafc, #edf2f7);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .meta-items {
             display: flex;
             align-items: center;
-            gap: 20px;
-            margin-bottom: 25px;
-            color: #718096;
-            font-size: 14px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
         .meta-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            background: #ffffff;
+            padding: 8px 14px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4a5568;
+            min-width: fit-content;
         }
         
         .meta-icon {
             width: 16px;
             height: 16px;
-            opacity: 0.7;
+            color: #667eea;
+            flex-shrink: 0;
+        }
+        
+        .meta-date {
+            color: #2d3748;
+            font-weight: 600;
+        }
+        
+        .meta-read-time {
+            color: #38a169;
+        }
+        
+        .meta-author {
+            color: #805ad5;
         }
         
         .blog-excerpt {
@@ -170,34 +200,132 @@
         
         /* Footer */
         .footer {
-            background-color: #f7fafc;
-            padding: 30px 40px;
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            padding: 40px;
             text-align: center;
-            border-top: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .footer-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer-logo {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .footer-text {
-            color: #718096;
-            font-size: 14px;
-            margin-bottom: 15px;
+            color: #cbd5e0;
+            font-size: 16px;
+            margin-bottom: 25px;
+            font-weight: 500;
         }
         
         .social-links {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
         
         .social-link {
-            display: inline-block;
-            margin: 0 8px;
-            color: #667eea;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #ffffff;
             text-decoration: none;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .footer-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #4a5568, transparent);
+            margin: 25px 0;
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .footer-link {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
             font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: #667eea;
         }
         
         .unsubscribe {
             color: #a0aec0;
-            font-size: 12px;
+            font-size: 13px;
             text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #4a5568;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .unsubscribe:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .footer-copyright {
+            color: #718096;
+            font-size: 12px;
+            margin-top: 20px;
+            line-height: 1.5;
         }
         
         /* Mobile Responsive */
@@ -221,12 +349,34 @@
             
             .blog-meta {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+                align-items: stretch;
+                padding: 15px;
+            }
+            
+            .meta-items {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .meta-item {
+                justify-content: center;
             }
             
             .footer {
-                padding: 25px 20px;
+                padding: 30px 20px;
+            }
+            
+            .social-links {
+                gap: 15px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-links {
+                justify-content: center;
             }
         }
         
@@ -248,8 +398,15 @@
                 color: #cbd5e0;
             }
             
-            .footer {
-                background-color: #2d3748;
+            .blog-meta {
+                background: linear-gradient(135deg, #2d3748, #4a5568);
+                border-color: #4a5568;
+            }
+            
+            .meta-item {
+                background: #1a202c;
+                border-color: #4a5568;
+                color: #cbd5e0;
             }
         }
     </style>
@@ -279,28 +436,30 @@
             
             <!-- Meta Information -->
             <div class="blog-meta">
-                <div class="meta-item">
-                    <svg class="meta-icon" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
-                    </svg>
-                    <span>{{ $blog->created_at->format('M d, Y') }}</span>
+                <div class="meta-items">
+                    <div class="meta-item">
+                        <svg class="meta-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="meta-date">{{ $blog->created_at->format('M d, Y') }}</span>
+                    </div>
+                    
+                    <div class="meta-item">
+                        <svg class="meta-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="meta-read-time">{{ ceil(str_word_count(strip_tags($blog->content)) / 200) }} min read</span>
+                    </div>
+                    
+                    @if($blog->author)
+                    <div class="meta-item">
+                        <svg class="meta-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="meta-author">{{ $blog->author->name ?? 'PropX Team' }}</span>
+                    </div>
+                    @endif
                 </div>
-                
-                <div class="meta-item">
-                    <svg class="meta-icon" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
-                    </svg>
-                    <span>{{ ceil(str_word_count(strip_tags($blog->content)) / 200) }} min read</span>
-                </div>
-                
-                @if($blog->author)
-                <div class="meta-item">
-                    <svg class="meta-icon" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-                    </svg>
-                    <span>{{ $blog->author->name ?? 'PropX Team' }}</span>
-                </div>
-                @endif
             </div>
             
             <!-- Blog Excerpt -->
@@ -326,23 +485,35 @@
         
         <!-- Footer -->
         <div class="footer">
-            <div class="footer-text">
-                Thanks for being part of the PropX Pro community!
-            </div>
-            
-            <div class="social-links">
-                <a href="#" class="social-link">Website</a>
-                <a href="#" class="social-link">LinkedIn</a>
-                <a href="#" class="social-link">Twitter</a>
-            </div>
-            
-            <div style="margin-top: 15px;">
-                <a href="#" class="unsubscribe">Unsubscribe from these emails</a>
-            </div>
-            
-            <div style="margin-top: 10px; color: #a0aec0; font-size: 11px;">
-                © {{ date('Y') }} PropX Pro. All rights reserved.<br>
-                This email was sent because you subscribed to our blog updates.
+            <div class="footer-content">
+                <div class="footer-logo">PropX Pro</div>
+                <div class="footer-text">
+                    Thanks for being part of our community! 🚀
+                </div>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Website">🌐</a>
+                    <a href="#" class="social-link" title="LinkedIn">💼</a>
+                    <a href="#" class="social-link" title="Twitter">🐦</a>
+                    <a href="#" class="social-link" title="Facebook">📘</a>
+                </div>
+                
+                <div class="footer-divider"></div>
+                
+                <div class="footer-bottom">
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">Privacy Policy</a>
+                        <a href="#" class="footer-link">Terms of Service</a>
+                        <a href="#" class="footer-link">Contact Us</a>
+                    </div>
+                    
+                    <a href="#" class="unsubscribe">Unsubscribe</a>
+                </div>
+                
+                <div class="footer-copyright">
+                    © {{ date('Y') }} PropX Pro. All rights reserved.<br>
+                    Empowering smart property investment decisions worldwide.
+                </div>
             </div>
         </div>
     </div>
