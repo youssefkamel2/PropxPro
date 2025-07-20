@@ -32,18 +32,12 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
         }
         
-        /* Animated background gradient */
+        /* Modern minimal header */
         .header {
-            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            padding: 0;
+            background: #ffffff;
+            padding: 20px 40px;
             position: relative;
-            overflow: hidden;
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-bottom: 1px solid #f1f5f9;
         }
         
         @keyframes gradientShift {
@@ -53,30 +47,31 @@
         }
         
         .header-content {
-            text-align: center;
-            z-index: 2;
-            position: relative;
-            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .logo {
-            color: #ffffff;
-            font-size: 32px;
+            color: #1e293b;
+            font-size: 28px;
             font-weight: 800;
             text-decoration: none;
             letter-spacing: -1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        .tagline {
-            color: rgba(255, 255, 255, 0.95);
-            font-size: 16px;
-            margin-top: 8px;
-            font-weight: 500;
+        .header-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         
@@ -124,25 +119,31 @@
         
         .hero-section {
             position: relative;
-            margin: -20px 0 0 0;
-            border-radius: 24px 24px 0 0;
+            margin: 0;
             overflow: hidden;
+            height: 400px;
         }
         
         .hero-image {
             width: 100%;
-            height: 320px;
+            height: 400px;
             object-fit: cover;
             display: block;
         }
         
         .hero-overlay {
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            padding: 40px;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(102,126,234,0.4));
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
         
         .category-badge {
@@ -162,10 +163,40 @@
         
         .hero-title {
             color: #ffffff;
-            font-size: 24px;
+            font-size: 32px;
             font-weight: 800;
             line-height: 1.2;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            max-width: 500px;
+        }
+        
+        .hero-excerpt {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 400px;
+            margin-bottom: 30px;
+        }
+        
+        .hero-cta {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.95);
+            color: #667eea;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .hero-cta:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
         
         .content {
@@ -251,7 +282,7 @@
         .cta-button {
             display: inline-block;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff;
+            color: #f8fafc;
             padding: 18px 40px;
             text-decoration: none;
             border-radius: 50px;
@@ -500,27 +531,27 @@
 </head>
 <body>
     <div class="email-container">
-        <!-- Animated Header -->
+        <!-- Modern Minimal Header -->
         <div class="header">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            
             <div class="header-content">
                 <a href="{{ url('/') }}" class="logo">PropxPro</a>
-                <div class="tagline">Real Estate • Insights • Innovation</div>
+                <div class="header-badge">Newsletter</div>
             </div>
         </div>
         
         <!-- Content Wrapper -->
         <div class="content-wrapper">
-            <!-- Hero Section with Overlay -->
+            <!-- Hero Section with Full Overlay -->
             <div class="hero-section">
                 @if($blog->cover_photo)
                 <img src="{{ asset('storage/' . $blog->cover_photo) }}" alt="{{ $blog->title }}" class="hero-image">
                 <div class="hero-overlay">
                     <span class="category-badge">{{ ucfirst($blog->category) }}</span>
                     <h1 class="hero-title">{{ $blog->title }}</h1>
+                    <p class="hero-excerpt">{!! \Illuminate\Support\Str::limit(strip_tags($blog->content), 120) !!}...</p>
+                    <a href="{{ url('/blog/' . $blog->id) }}" class="hero-cta" target="_blank">
+                        Read Full Story →
+                    </a>
                 </div>
                 @endif
             </div>
