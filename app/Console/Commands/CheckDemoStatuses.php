@@ -17,6 +17,7 @@ class CheckDemoStatuses extends Command
 
     public function handle()
     {
+        Log::info("Starting demo status check...");
         $demos = RequestDemo::where(function ($query) {
             $query->whereIn('status', ['pending', 'confirmed', 'awaiting_confirmation'])
                 ->orWhereIn('meet_status', ['scheduled', 'awaiting_confirmation', 'pending']);
