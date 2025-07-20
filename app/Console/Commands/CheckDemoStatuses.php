@@ -28,6 +28,9 @@ class CheckDemoStatuses extends Command
         }
 
         $this->info('Completed status check for ' . $demos->count() . ' demos');
+
+        Log::info("Demo status check completed for {$demos->count()} demos.");
+
     }
 
     protected function checkDemoStatus($demo)
