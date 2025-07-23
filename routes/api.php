@@ -60,7 +60,7 @@ Route::group(['middleware' => ['auth:api']], function () {
             Route::patch('/{integration}/toggle-status', [IntegrationController::class, 'toggleStatus']);
         });
 
-        // feautres
+        // features
         Route::group(['prefix' => 'features'], function() {
             Route::get('/', [FeatureController::class, 'index']);
             Route::post('/', [FeatureController::class, 'store']);

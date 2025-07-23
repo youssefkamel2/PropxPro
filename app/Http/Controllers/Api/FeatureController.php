@@ -16,8 +16,8 @@ class FeatureController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api')->except(['index', 'show']);
-        $this->middleware('permission:view_features')->only(['indexAdmin']);
+        // $this->middleware('auth:api')->except(['index', 'show']);
+        $this->middleware('permission:view_features')->only(['show', 'index']);
         $this->middleware('permission:create_feature')->only(['store']);
         $this->middleware('permission:edit_feature')->only(['update']);
         $this->middleware('permission:toggle_feature_status')->only(['toggleStatus']);
