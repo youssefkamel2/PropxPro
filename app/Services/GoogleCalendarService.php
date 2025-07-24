@@ -62,6 +62,10 @@ class GoogleCalendarService
                 'start' => ['dateTime' => $eventData['start']],
                 'end' => ['dateTime' => $eventData['end']],
                 'attendees' => [['email' => $eventData['attendee_email']]],
+                'creator' => [
+                    'displayName' => 'PropxPro Support',
+                    'email' => 'support@propxpro.com'
+                ],
                 'organizer' => [
                     'displayName' => 'PropxPro Support',
                     'email' => 'info@propxpro.com'
