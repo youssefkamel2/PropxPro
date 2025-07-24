@@ -133,6 +133,17 @@ Route::get('landing/blogs/{blog}', [BlogController::class, 'show']);
 Route::post('request-demo', [RequestDemoController::class, 'store']);
 
 
+// Route::get('/google-calendar/auth', function () {
+//     $client = new Google\Client();
+//     $client->setAuthConfig(storage_path('app/google-calendar/oauth-credentials.json'));
+//     $client->addScope(Google\Service\Calendar::CALENDAR_EVENTS);
+//     $client->setRedirectUri('http://localhost:8000/api/google-calendar/oauth-callback');
+//     $client->setAccessType('offline');
+//     $client->setPrompt('consent'); // Ensures refresh token is returned
+
+//     $authUrl = $client->createAuthUrl();
+//     return redirect()->away($authUrl);
+// });
 
 // Route::get('/google-calendar/oauth-callback', function (Request $request) {
 //     $client = new Google\Client();
