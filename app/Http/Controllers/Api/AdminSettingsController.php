@@ -86,7 +86,7 @@ class AdminSettingsController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'profile_image' => $user->profile_image,
+            'profile_image' => $user->profile_image ? asset('storage/' . $user->profile_image) : null,
             'status' => $user->status,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
