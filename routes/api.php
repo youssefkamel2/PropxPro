@@ -36,7 +36,7 @@ Route::group(['prefix' => 'auth'], function () {
 // Protected routes
 Route::group(['middleware' => ['auth:api']], function () {
     // Superadmin routes for managing admins
-    Route::group(['middleware' => ['role:superadmin'], 'prefix' => 'admins'], function () {
+    Route::group(['prefix' => 'admins'], function () {
         Route::get('/', [AdminController::class, 'index']);
         Route::post('/', [AdminController::class, 'store']);
         Route::post('/{admin}', [AdminController::class, 'update']);
