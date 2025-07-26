@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\JsonResponse;
 use App\Models\User;
+use App\Mail\VerificationCodeMail;
+use App\Traits\ResponseTrait;
 
 class AdminSettingsController extends Controller
 {
+    use ResponseTrait;
     /**
      * Request to update profile: just send a verification code to current email.
      */
@@ -26,13 +29,10 @@ class AdminSettingsController extends Controller
         $user->email_verification_expires_at = $expiresAt;
         $user->save();
 
-        // Send code to current email
-        Mail::raw("Your verification code is: $code", function ($message) use ($user) {
-            $message->to($user->email)
-                ->subject('Profile Update Verification Code');
-        });
+        // Send code to current email using Mailable
+        Mail::to($user->email)->send(new VerificationCodeMail($code));
 
-        return response()->json(['success' => true, 'message' => 'Verification code sent to your email.']);
+        return $this->success(null, 'Verification code sent to your email.');
     }
 
     /**
@@ -51,7 +51,7 @@ class AdminSettingsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 422);
+            return $this->error($validator->errors()->first(), 422);
         }
 
         if (
@@ -60,7 +60,7 @@ class AdminSettingsController extends Controller
             !$user->email_verification_expires_at ||
             now()->gt($user->email_verification_expires_at)
         ) {
-            return response()->json(['success' => false, 'message' => 'Invalid or expired verification code.'], 403);
+            return $this->error('Invalid or expired verification code.', 403);
         }
 
         if ($request->has('name')) {
@@ -82,6 +82,14 @@ class AdminSettingsController extends Controller
         $user->email_verification_expires_at = null;
         $user->save();
 
-        return response()->json(['success' => true, 'message' => 'Profile updated successfully.']);
+        return $this->success([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'profile_image' => $user->profile_image,
+            'status' => $user->status,
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
+        ], 'Profile updated successfully.');
     }
 }
