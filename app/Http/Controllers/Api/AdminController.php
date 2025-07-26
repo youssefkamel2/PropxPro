@@ -27,7 +27,6 @@ class AdminController extends Controller
         $this->middleware('permission:delete_admin')->only(['destroy']);
         $this->middleware('permission:activate_admin')->only(['toggleStatus']);
         $this->middleware('permission:manage_admin_permissions')->only(['updatePermissions']);
-        $this->middleware('role:superadmin,admin')->only(['listAvailablePermissions']);
 
     }
 
