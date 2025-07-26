@@ -19,7 +19,16 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:api', 'role:superadmin']);
+        // $this->middleware(['auth:api', 'role:superadmin']);
+        // make each function with it's permission as at seeder
+        $this->middleware('permission:view_admins')->only(['index']);
+        $this->middleware('permission:create_admin')->only(['store']);
+        $this->middleware('permission:edit_admin')->only(['update']);
+        $this->middleware('permission:delete_admin')->only(['destroy']);
+        $this->middleware('permission:activate_admin')->only(['toggleStatus']);
+        $this->middleware('permission:manage_admin_permissions')->only(['updatePermissions']);
+        $this->middleware('role:superadmin,admin')->only(['listAvailablePermissions']);
+
     }
 
     public function index(): JsonResponse
