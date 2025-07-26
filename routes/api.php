@@ -106,6 +106,9 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         Route::get('/request-demos', [RequestDemoController::class, 'index']);
 
+        // Admin self-service settings (2-step verification)
+        Route::post('/settings/request-update', [\App\Http\Controllers\Api\AdminSettingsController::class, 'requestUpdate']);
+        Route::post('/settings/confirm-update', [\App\Http\Controllers\Api\AdminSettingsController::class, 'confirmUpdate']);
     });
 
 });
