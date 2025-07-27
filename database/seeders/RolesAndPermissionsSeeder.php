@@ -20,12 +20,12 @@ class RolesAndPermissionsSeeder extends Seeder
     {
         // Clear existing roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-        
+
         Schema::disableForeignKeyConstraints();
-        
+
         Permission::query()->delete();
         Role::query()->delete();
-        
+
         // Create admin management permissions
         $adminManagementPermissions = [
             'view_admins' => 'Can view list of admins',
@@ -89,6 +89,24 @@ class RolesAndPermissionsSeeder extends Seeder
             'view_request_demos' => 'Can view all demo requests',
         ];
 
+        // Help Center permissions
+        $helpCenterPermissions = [
+            'view_help_categories' => 'Can view help categories',
+            'create_help_category' => 'Can create help categories',
+            'edit_help_category' => 'Can edit help categories',
+            'delete_help_category' => 'Can delete help categories',
+            'view_help_subcategories' => 'Can view help subcategories',
+            'create_help_subcategory' => 'Can create help subcategories',
+            'edit_help_subcategory' => 'Can edit help subcategories',
+            'delete_help_subcategory' => 'Can delete help subcategories',
+            'view_help_topics' => 'Can view help topics',
+            'create_help_topic' => 'Can create help topics',
+            'edit_help_topic' => 'Can edit help topics',
+            'delete_help_topic' => 'Can delete help topics',
+            // 'upload_help_topic_image' => 'Can upload images for help topics',
+            // 'manage_help_center' => 'Can manage all help center content',
+        ];
+
         $allPermissions = array_merge(
             $adminManagementPermissions,
             $integrationPermissions,
@@ -97,7 +115,8 @@ class RolesAndPermissionsSeeder extends Seeder
             $legalDocumentPermissions,
             $blogPermissions,
             $newsletterPermissions,
-            $requestDemoPermissions
+            $requestDemoPermissions,
+            $helpCenterPermissions
         );
 
         foreach ($allPermissions as $permission => $description) {
@@ -124,6 +143,9 @@ class RolesAndPermissionsSeeder extends Seeder
         // Assign all permissions to superadmin
         $superadminRole->givePermissionTo(Permission::all());
 
+        // Assign manage_help_center to admin role as well
+        // $adminRole->givePermissionTo('manage_help_center');
+
         // Create default superadmin user if it doesn't exist
         $superadmin = User::firstOrCreate(
             ['email' => 'superadmin@propxpro.com'],
@@ -135,7 +157,7 @@ class RolesAndPermissionsSeeder extends Seeder
         );
 
         $superadmin->assignRole('superadmin');
-        
+
         Schema::enableForeignKeyConstraints();
     }
 }

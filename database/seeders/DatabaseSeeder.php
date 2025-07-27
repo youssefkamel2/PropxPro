@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             FeaturesAndPlansSeeder::class,
             LegalDocumentsSeeder::class,
+            HelpCenterSeeder::class,
         ]);
     }
 }

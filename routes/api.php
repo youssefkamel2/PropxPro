@@ -47,10 +47,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     });
 
     // admin routes
-    Route::group(['prefix' => 'admin'], function() {
-        
+    Route::group(['prefix' => 'admin'], function () {
+
         // integrations
-        Route::group(['prefix' => 'integrations'], function() {
+        Route::group(['prefix' => 'integrations'], function () {
             Route::get('/', [IntegrationController::class, 'indexAdmin']);
             Route::post('/', [IntegrationController::class, 'store']);
             Route::post('/{integration}', [IntegrationController::class, 'update']);
@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         });
 
         // features
-        Route::group(['prefix' => 'features'], function() {
+        Route::group(['prefix' => 'features'], function () {
             Route::get('/', [FeatureController::class, 'index']);
             Route::post('/', [FeatureController::class, 'store']);
             Route::get('/{feature}', [FeatureController::class, 'show']);
@@ -69,7 +69,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         });
 
         // plans
-        Route::group(['prefix' => 'plans'], function() {
+        Route::group(['prefix' => 'plans'], function () {
             Route::get('/', [PlanController::class, 'indexAdmin']);
             Route::post('/', [PlanController::class, 'store']);
             Route::get('/{plan}', [PlanController::class, 'show']);
@@ -79,14 +79,14 @@ Route::group(['middleware' => ['auth:api']], function () {
         });
 
         // legal documents
-        Route::group(['prefix' => 'legal-documents'], function() {
+        Route::group(['prefix' => 'legal-documents'], function () {
             Route::post('privacy-policy', [LegalDocumentController::class, 'updatePrivacyPolicy']);
             Route::post('terms-of-service', [LegalDocumentController::class, 'updateTermsOfService']);
 
         });
 
         // Blog management
-        Route::group(['prefix' => 'blogs'], function() {
+        Route::group(['prefix' => 'blogs'], function () {
             Route::get('/', [BlogController::class, 'index']);
             Route::post('/', [BlogController::class, 'store']);
             Route::post('/{blog}', [BlogController::class, 'update']);
@@ -96,10 +96,10 @@ Route::group(['middleware' => ['auth:api']], function () {
         });
 
         // Newsletter subscriber management
-        Route::group(['prefix' => 'newsletter'], function() {
+        Route::group(['prefix' => 'newsletter'], function () {
             Route::get('/', [NewsletterSubscriptionController::class, 'index']);
             Route::delete('/{newsletterSubscription}', [NewsletterSubscriptionController::class, 'destroy']);
-            
+
         });
 
         Route::get('/request-demos', [RequestDemoController::class, 'index']);
@@ -107,6 +107,32 @@ Route::group(['middleware' => ['auth:api']], function () {
         // Admin self-service settings (2-step verification)
         Route::post('/settings/request-update', [\App\Http\Controllers\Api\AdminSettingsController::class, 'requestUpdate']);
         Route::post('/settings/confirm-update', [\App\Http\Controllers\Api\AdminSettingsController::class, 'confirmUpdate']);
+
+
+        Route::group(['prefix' => 'help-center'], function () {
+            // Help Categories
+            Route::get('categories', [App\Http\Controllers\Api\HelpCategoryController::class, 'index']);
+            Route::post('categories', [App\Http\Controllers\Api\HelpCategoryController::class, 'store']);
+            Route::get('categories/{id}', [App\Http\Controllers\Api\HelpCategoryController::class, 'show']);
+            Route::put('categories/{id}', [App\Http\Controllers\Api\HelpCategoryController::class, 'update']);
+            Route::delete('categories/{id}', [App\Http\Controllers\Api\HelpCategoryController::class, 'destroy']);
+        
+            // Help Subcategories
+            Route::get('subcategories', [App\Http\Controllers\Api\HelpSubcategoryController::class, 'index']);
+            Route::post('subcategories', [App\Http\Controllers\Api\HelpSubcategoryController::class, 'store']);
+            Route::get('subcategories/{id}', [App\Http\Controllers\Api\HelpSubcategoryController::class, 'show']);
+            Route::put('subcategories/{id}', [App\Http\Controllers\Api\HelpSubcategoryController::class, 'update']);
+            Route::delete('subcategories/{id}', [App\Http\Controllers\Api\HelpSubcategoryController::class, 'destroy']);
+        
+            // Help Topics
+            Route::get('topics', [App\Http\Controllers\Api\HelpTopicController::class, 'index']);
+            Route::post('topics', [App\Http\Controllers\Api\HelpTopicController::class, 'store']);
+            Route::get('topics/{id}', [App\Http\Controllers\Api\HelpTopicController::class, 'show']);
+            Route::put('topics/{id}', [App\Http\Controllers\Api\HelpTopicController::class, 'update']);
+            Route::delete('topics/{id}', [App\Http\Controllers\Api\HelpTopicController::class, 'destroy']);
+            Route::post('topics/upload-image', [App\Http\Controllers\Api\HelpTopicController::class, 'uploadContentImage']);
+        });
+
     });
 
 });
@@ -133,6 +159,11 @@ Route::get('landing/blogs/{blog}', [BlogController::class, 'show']);
 // Public request demo endpoint
 Route::post('request-demo', [RequestDemoController::class, 'store']);
 
+// Help Center Public APIs
+Route::get('help-center', [App\Http\Controllers\Api\HelpCenterController::class, 'index']);
+Route::get('help-center/topic/{slug}', [App\Http\Controllers\Api\HelpCenterController::class, 'showTopic']);
+Route::get('help-center/search', [App\Http\Controllers\Api\HelpCenterController::class, 'search']);
+
 
 // Route::get('/google-calendar/auth', function () {
 //     $client = new Google\Client();
@@ -151,21 +182,21 @@ Route::post('request-demo', [RequestDemoController::class, 'store']);
 //     $client->setAuthConfig(storage_path('app/google-calendar/oauth-credentials.json'));
 //     $client->addScope(Google\Service\Calendar::CALENDAR_EVENTS);
 //     $client->setRedirectUri('http://localhost:8000/api/google-calendar/oauth-callback');
-    
+
 //     try {
 //         if (!$request->has('code')) {
 //             throw new \Exception('Missing authorization code');
 //         }
 
 //         $token = $client->fetchAccessTokenWithAuthCode($request->code);
-        
+
 //         if (isset($token['error'])) {
 //             Log::error('Google OAuth Error', $token);
 //             return response()->json(['error' => $token['error_description'] ?? 'Failed to get access token'], 400);
 //         }
 
 //         Storage::put('google-calendar/oauth-token.json', json_encode($token));
-        
+
 //         return response()->json([
 //             'success' => true,
 //             'message' => 'Successfully authenticated!'
