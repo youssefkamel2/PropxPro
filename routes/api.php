@@ -8,11 +8,9 @@ use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\PlanController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\FeatureController;
-use App\Http\Controllers\Api\HelpArticleController;
 use App\Http\Controllers\Api\IntegrationController;
 use App\Http\Controllers\Api\RequestDemoController;
 use App\Http\Controllers\Api\LegalDocumentController;
-use App\Http\Controllers\Api\HelpArticleImageController;
 use App\Http\Controllers\Api\NewsletterSubscriptionController;
 use Illuminate\Support\Facades\Log;
 
@@ -176,17 +174,4 @@ Route::post('request-demo', [RequestDemoController::class, 'store']);
 //         Log::error('Google Auth Exception: ' . $e->getMessage());
 //         return response()->json(['error' => $e->getMessage()], 500);
 //     }
-// });
-
-
-// Route::prefix('help-articles')->group(function () {
-//     Route::get('/', [HelpArticleController::class, 'index']);
-//     Route::post('/', [HelpArticleController::class, 'store']);
-//     Route::get('/{id}', [HelpArticleController::class, 'show']);
-//     Route::put('/{id}', [HelpArticleController::class, 'update']);
-//     Route::delete('/{id}', [HelpArticleController::class, 'destroy']);
-    
-//     // Image routes
-//     Route::post('/images/upload', [HelpArticleImageController::class, 'upload']);
-//     Route::delete('/images/{id}', [HelpArticleImageController::class, 'destroy']);
 // });
