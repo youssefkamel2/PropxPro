@@ -14,7 +14,6 @@ class HelpTopicResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'content' => $this->content,
-            'images' => $this->images,
             'order' => $this->order,
             'is_active' => $this->is_active,
             'author' => $this->whenLoaded('author', function () {

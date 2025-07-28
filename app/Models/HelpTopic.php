@@ -14,14 +14,9 @@ class HelpTopic extends Model
         'title',
         'slug',
         'content',
-        'images',
         'order',
         'is_active',
         'created_by',
-    ];
-
-    protected $casts = [
-        'images' => 'array',
     ];
 
     public function subcategory()
