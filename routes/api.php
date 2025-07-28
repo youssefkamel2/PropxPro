@@ -116,14 +116,14 @@ Route::group(['middleware' => ['auth:api']], function () {
             Route::get('categories/{id}', [App\Http\Controllers\Api\HelpCategoryController::class, 'show']);
             Route::put('categories/{id}', [App\Http\Controllers\Api\HelpCategoryController::class, 'update']);
             Route::delete('categories/{id}', [App\Http\Controllers\Api\HelpCategoryController::class, 'destroy']);
-        
+
             // Help Subcategories
             Route::get('subcategories', [App\Http\Controllers\Api\HelpSubcategoryController::class, 'index']);
             Route::post('subcategories', [App\Http\Controllers\Api\HelpSubcategoryController::class, 'store']);
             Route::get('subcategories/{id}', [App\Http\Controllers\Api\HelpSubcategoryController::class, 'show']);
             Route::put('subcategories/{id}', [App\Http\Controllers\Api\HelpSubcategoryController::class, 'update']);
             Route::delete('subcategories/{id}', [App\Http\Controllers\Api\HelpSubcategoryController::class, 'destroy']);
-        
+
             // Help Topics
             Route::get('topics', [App\Http\Controllers\Api\HelpTopicController::class, 'index']);
             Route::post('topics', [App\Http\Controllers\Api\HelpTopicController::class, 'store']);
@@ -161,6 +161,8 @@ Route::post('request-demo', [RequestDemoController::class, 'store']);
 
 // Help Center Public APIs
 Route::get('help-center', [App\Http\Controllers\Api\HelpCenterController::class, 'index']);
+Route::get('help-center/category/{id}', [App\Http\Controllers\Api\HelpCenterController::class, 'getCategory']);
+Route::get('help-center/subcategory/{id}', [App\Http\Controllers\Api\HelpCenterController::class, 'getSubcategory']);
 Route::get('help-center/topic/{slug}', [App\Http\Controllers\Api\HelpCenterController::class, 'showTopic']);
 Route::get('help-center/search', [App\Http\Controllers\Api\HelpCenterController::class, 'search']);
 
