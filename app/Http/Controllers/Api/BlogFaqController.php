@@ -41,13 +41,15 @@ class BlogFaqController extends Controller
         return $this->success(new BlogFaqResource($faq), 'FAQ created successfully', 201);
     }
 
-    public function show(Blog $blog, BlogFaq $faq)
+    public function show(Blog $blog, $faq)
     {
+
+        $faq = BlogFaq::find($faq);
 
         if (!$faq) {
             return $this->error('FAQ not found', 404);
         }
-        
+
         // Ensure FAQ belongs to the blog
         if ($faq->blog_id !== $blog->id) {
             return $this->error('FAQ not found for this blog', 404);
@@ -57,8 +59,15 @@ class BlogFaqController extends Controller
         return $this->success(new BlogFaqResource($faq), 'FAQ fetched successfully');
     }
 
-    public function update(Request $request, Blog $blog, BlogFaq $faq)
+    public function update(Request $request, Blog $blog, $faq)
     {
+
+        $faq = BlogFaq::find($faq);
+
+        if (!$faq) {
+            return $this->error('FAQ not found', 404);
+        }
+
         // Ensure FAQ belongs to the blog
         if ($faq->blog_id !== $blog->id) {
             return $this->error('FAQ not found for this blog', 404);
@@ -78,8 +87,14 @@ class BlogFaqController extends Controller
         return $this->success(new BlogFaqResource($faq), 'FAQ updated successfully');
     }
 
-    public function destroy(Blog $blog, BlogFaq $faq)
+    public function destroy(Blog $blog, $faq)
     {
+        $faq = BlogFaq::find($faq);
+
+        if (!$faq) {
+            return $this->error('FAQ not found', 404);
+        }
+        
         // Ensure FAQ belongs to the blog
         if ($faq->blog_id !== $blog->id) {
             return $this->error('FAQ not found for this blog', 404);
