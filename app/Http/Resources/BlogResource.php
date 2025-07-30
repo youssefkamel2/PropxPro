@@ -12,19 +12,22 @@ class BlogResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'cover_photo_url' => $this->cover_photo_url,
+            'slug' => $this->slug,
+            'cover_photo' => $this->cover_photo_url,
             'category' => $this->category,
             'content' => $this->content,
+            'mark_as_hero' => $this->mark_as_hero,
+            'is_active' => $this->is_active,
             'tags' => $this->tags,
             'headings' => $this->headings,
-            // return is active as true or false
-            'mark_as_hero' => $this->mark_as_hero ? true : false,
-            'is_active' => $this->is_active ? true : false,
-            'created_by_email' => $this->author->email,
-            'created_by_name' => $this->author->name,
+            'author' => $this->whenLoaded('author', function () {
+                return [
+                    'id' => $this->author->id,
+                    'name' => $this->author->name,
+                ];
+            }),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'emails_sent_count' => $this->emailLogs()->where('status', 'sent')->count(),
         ];
     }
-} 
+}

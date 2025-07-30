@@ -37,6 +37,7 @@ class HelpTopicController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:help_topics,slug',
             'content' => 'required|string',
+            'headings' => 'nullable',
             'order' => 'nullable|integer',
             'is_active' => 'nullable|boolean',
         ]);
@@ -44,6 +45,11 @@ class HelpTopicController extends Controller
             return $this->error($validator->errors()->first(), 422);
         }
         $data = $validator->validated();
+        if (isset($data['headings'])) {
+            if (is_string($data['headings'])) {
+                $data['headings'] = json_decode($data['headings'], true);
+            }
+        }
         $data['created_by'] = Auth::id();
         $topic = HelpTopic::create($data);
         return $this->success(new HelpTopicResource($topic), 'Help topic created successfully', 201);
@@ -63,13 +69,20 @@ class HelpTopicController extends Controller
             'title' => 'sometimes|string|max:255',
             'slug' => 'sometimes|string|max:255|unique:help_topics,slug,' . $id,
             'content' => 'sometimes|string',
+            'headings' => 'nullable',
             'order' => 'nullable|integer',
             'is_active' => 'nullable|boolean',
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors()->first(), 422);
         }
-        $topic->update($validator->validated());
+        $data = $validator->validated();
+        if (isset($data['headings'])) {
+            if (is_string($data['headings'])) {
+                $data['headings'] = json_decode($data['headings'], true);
+            }
+        }
+        $topic->update($data);
         return $this->success(new HelpTopicResource($topic), 'Help topic updated successfully');
     }
 

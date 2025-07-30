@@ -14,6 +14,7 @@ class HelpTopic extends Model
         'title',
         'slug',
         'content',
+        'headings',
         'order',
         'is_active',
         'created_by',
@@ -28,4 +29,20 @@ class HelpTopic extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-} 
+
+    public function setHeadingsAttribute($value)
+    {
+        if (is_array($value)) {
+            $this->attributes['headings'] = json_encode($value);
+        } else {
+            $this->attributes['headings'] = $value;
+        }
+    }
+
+    public function getHeadingsAttribute($value)
+    {
+        if (!$value)
+            return [];
+        return json_decode($value, true) ?: [];
+    }
+}

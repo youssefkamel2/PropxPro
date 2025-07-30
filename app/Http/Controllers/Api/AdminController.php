@@ -56,6 +56,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'bio' => 'nullable|string',
             'password' => ['required', Password::defaults()],
             'permissions' => ['sometimes', 'array'],
             'permissions.*' => ['string', 'exists:permissions,name']
@@ -71,6 +72,7 @@ class AdminController extends Controller
             $admin = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
+                'bio' => $validated['bio'] ?? null,
                 'password' => Hash::make($validated['password']),
                 'status' => 'active'
             ]);
@@ -85,6 +87,7 @@ class AdminController extends Controller
                 'id' => $admin->id,
                 'name' => $admin->name,
                 'email' => $admin->email,
+                'bio' => $admin->bio,
                 'profile_image' => $admin->profile_image ? asset('storage/' . $admin->profile_image) : null,
                 'status' => 'active',
                 'role' => 'admin',
@@ -99,7 +102,7 @@ class AdminController extends Controller
     public function update(Request $request, $id): JsonResponse
     {
         $admin = User::find($id);
-        
+
         if (!$admin) {
             return $this->error('Admin not found', 404);
         }
@@ -111,6 +114,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
             'email' => 'sometimes|string|email|max:255|unique:users,email,' . $admin->id,
+            'bio' => 'nullable|string',
             'password' => ['sometimes', Password::defaults()],
             'status' => 'sometimes|in:active,inactive',
         ]);
@@ -131,6 +135,10 @@ class AdminController extends Controller
                 $updateData['email'] = $validated['email'];
             }
 
+            if (isset($validated['bio'])) {
+                $updateData['bio'] = $validated['bio'];
+            }
+
             if (isset($validated['password'])) {
                 $updateData['password'] = Hash::make($validated['password']);
             }
@@ -145,6 +153,7 @@ class AdminController extends Controller
                 'id' => $admin->id,
                 'name' => $admin->name,
                 'email' => $admin->email,
+                'bio' => $admin->bio,
                 'profile_image' => $admin->profile_image ? asset('storage/' . $admin->profile_image) : null,
                 'status' => $admin->status,
                 'role' => 'admin',
@@ -159,7 +168,7 @@ class AdminController extends Controller
     public function toggleStatus($id): JsonResponse
     {
         $admin = User::find($id);
-        
+
         if (!$admin) {
             return $this->error('Admin not found', 404);
         }
@@ -190,7 +199,7 @@ class AdminController extends Controller
     public function destroy($id): JsonResponse
     {
         $admin = User::find($id);
-        
+
         if (!$admin) {
             return $this->error('Admin not found', 404);
         }
@@ -210,7 +219,7 @@ class AdminController extends Controller
     public function updatePermissions(Request $request, $id): JsonResponse
     {
         $admin = User::find($id);
-        
+
         if (!$admin) {
             return $this->error('Admin not found', 404);
         }

@@ -46,6 +46,7 @@ class AdminSettingsController extends Controller
             'code' => 'required|string',
             'name' => 'sometimes|string|max:255',
             'email' => 'sometimes|email|unique:users,email,' . $user->id,
+            'bio' => 'nullable|string',
             'password' => 'sometimes|string|min:8',
             'profile_image' => 'sometimes|file|image|max:2048',
         ]);
@@ -69,6 +70,9 @@ class AdminSettingsController extends Controller
         if ($request->has('email')) {
             $user->email = $request->email;
         }
+        if ($request->has('bio')) {
+            $user->bio = $request->bio;
+        }
         if ($request->has('password')) {
             $user->password = Hash::make($request->password);
         }
@@ -86,6 +90,7 @@ class AdminSettingsController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
+            'bio' => $user->bio,
             'profile_image' => $user->profile_image ? asset('storage/' . $user->profile_image) : null,
             'status' => $user->status,
             'created_at' => $user->created_at,

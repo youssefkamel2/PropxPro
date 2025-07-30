@@ -34,6 +34,7 @@ class BlogController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:blogs,slug',
             'cover_photo' => 'required|image|max:4096',
             'category' => 'required|in:trending,guides,insights',
             'content' => 'required|string',
@@ -93,6 +94,7 @@ class BlogController extends Controller
 
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|string|max:255',
+            'slug' => 'sometimes|string|max:255|unique:blogs,slug,' . $blog->id,
             'cover_photo' => 'sometimes|image|max:4096',
             'category' => 'sometimes|in:trending,guides,insights',
             'content' => 'sometimes|string',
@@ -193,4 +195,41 @@ class BlogController extends Controller
         $url = asset('storage/' . $path);
         return $this->success(['url' => $url], 'Image uploaded successfully');
     }
-} 
+
+    public function showBySlug($slug)
+    {
+        $blog = Blog::with('author')->where('slug', $slug)->where('is_active', true)->first();
+        if (!$blog) {
+            return $this->error('Blog not found', 404);
+        }
+        return $this->success(new BlogResource($blog), 'Blog fetched successfully');
+    }
+
+    public function recentBlogs()
+    {
+        $blogs = Blog::where('is_active', true)
+            ->select('id', 'slug', 'cover_photo')
+            ->latest()
+            ->take(5)
+            ->get();
+        return $this->success($blogs, 'Recent blogs fetched successfully');
+    }
+
+    public function relatedBlogs($blogId)
+    {
+        $blog = Blog::find($blogId);
+        if (!$blog) {
+            return $this->error('Blog not found', 404);
+        }
+
+        $relatedBlogs = Blog::where('is_active', true)
+            ->where('id', '!=', $blogId)
+            ->where('category', $blog->category)
+            ->select('id', 'slug', 'cover_photo')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return $this->success($relatedBlogs, 'Related blogs fetched successfully');
+    }
+}

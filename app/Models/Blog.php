@@ -11,6 +11,7 @@ class Blog extends Model
 
     protected $fillable = [
         'title',
+        'slug',
         'cover_photo',
         'category',
         'content',
@@ -42,7 +43,8 @@ class Blog extends Model
 
     public function getTagsAttribute($value)
     {
-        if (!$value) return [];
+        if (!$value)
+            return [];
         return array_filter(array_map('trim', explode(',', $value)));
     }
 
@@ -57,7 +59,8 @@ class Blog extends Model
 
     public function getHeadingsAttribute($value)
     {
-        if (!$value) return [];
+        if (!$value)
+            return [];
         return json_decode($value, true) ?: [];
     }
 
@@ -65,4 +68,4 @@ class Blog extends Model
     {
         return $this->cover_photo ? asset('storage/' . $this->cover_photo) : null;
     }
-} 
+}
