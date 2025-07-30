@@ -23,8 +23,8 @@ class BlogResource extends JsonResource
             'faqs' => BlogFaqResource::collection($this->whenLoaded('faqs')),
             'author' => $this->whenLoaded('author', function () {
                 return [
-                    'id' => $this->author->id,
                     'name' => $this->author->name,
+                    'bio' => $this->author->bio,
                 ];
             }),
             'created_at' => $this->created_at,
