@@ -43,10 +43,16 @@ class BlogFaqController extends Controller
 
     public function show(Blog $blog, BlogFaq $faq)
     {
+
+        if (!$faq) {
+            return $this->error('FAQ not found', 404);
+        }
+        
         // Ensure FAQ belongs to the blog
         if ($faq->blog_id !== $blog->id) {
             return $this->error('FAQ not found for this blog', 404);
         }
+
         
         return $this->success(new BlogFaqResource($faq), 'FAQ fetched successfully');
     }
