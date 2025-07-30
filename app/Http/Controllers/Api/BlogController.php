@@ -223,7 +223,7 @@ class BlogController extends Controller
         $relatedBlogs = Blog::where('is_active', true)
             ->where('id', '!=', $blogId)
             ->where('category', $blog->category)
-            ->select('id', 'slug', 'cover_photo')
+            ->select('id', 'slug', 'cover_photo', 'title', 'created_at')
             ->latest()
             ->take(3)
             ->get();
