@@ -96,12 +96,29 @@ Route::group(['middleware' => ['auth:api']], function () {
         });
 
         // Blog FAQ management
-        Route::group(['prefix' => 'blogs/manage/faq'], function () {
-            Route::get('/{blog}', [App\Http\Controllers\Api\BlogFaqController::class, 'index']);
+        // Route::group(['prefix' => 'blogs/manage/faq'], function () {
+        //     Route::get('/{blog}', [App\Http\Controllers\Api\BlogFaqController::class, 'index']);
+        //     Route::post('/', [App\Http\Controllers\Api\BlogFaqController::class, 'store']);
+        //     Route::get('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'show']);
+        //     Route::put('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'update']);
+        //     Route::delete('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'destroy']);
+        // });
+
+        Route::group(['prefix' => 'blogs/{blog}/manage/faq'], function () {
+            // List all FAQs for a specific blog
+            Route::get('/', [App\Http\Controllers\Api\BlogFaqController::class, 'index']);
+            
+            // Create a new FAQ for the blog
             Route::post('/', [App\Http\Controllers\Api\BlogFaqController::class, 'store']);
-            Route::get('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'show']);
-            Route::put('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'update']);
-            Route::delete('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'destroy']);
+            
+            // Show a specific FAQ
+            Route::get('/{faq}', [App\Http\Controllers\Api\BlogFaqController::class, 'show']);
+            
+            // Update a specific FAQ
+            Route::put('/{faq}', [App\Http\Controllers\Api\BlogFaqController::class, 'update']);
+            
+            // Delete a specific FAQ
+            Route::delete('/{faq}', [App\Http\Controllers\Api\BlogFaqController::class, 'destroy']);
         });
 
         // Newsletter subscriber management
