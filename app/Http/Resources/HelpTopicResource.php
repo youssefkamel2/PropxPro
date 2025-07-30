@@ -16,12 +16,23 @@ class HelpTopicResource extends JsonResource
             'headings' => $this->headings,
             'order' => $this->order,
             'is_active' => $this->is_active,
-            // 'author' => $this->whenLoaded('author', function () {
-            //     return [
-            //         'id' => $this->author->id,
-            //         'name' => $this->author->name,
-            //     ];
-            // }),
+            'author' => $this->whenLoaded('author', function () {
+                return [
+                    'name' => $this->author->name,
+                    'bio' => $this->author->bio,
+                    'profile_photo' => $this->author->profile_image ? asset('storage/' . $this->author->profile_image) : null,
+                ];
+            }),
+
+            'category' => $this->subcategory->category ? [
+                'id' => $this->subcategory->category->id,
+                'name' => $this->subcategory->category->name,
+            ] : null,
+
+            'subcategory' => $this->subcategory ? [
+                'id' => $this->subcategory->id,
+                'name' => $this->subcategory->name,
+            ] : null,
 
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
