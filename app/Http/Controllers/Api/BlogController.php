@@ -210,6 +210,13 @@ class BlogController extends Controller
             ->latest()
             ->take(5)
             ->get();
+
+        // return the full cover photo url
+        $blogs->map(function ($blog) {
+            $blog->cover_photo = asset('storage/' . $blog->cover_photo);
+            return $blog;
+        });
+
         return $this->success($blogs, 'Recent blogs fetched successfully');
     }
 
@@ -227,6 +234,11 @@ class BlogController extends Controller
             ->latest()
             ->take(3)
             ->get();
+
+        $relatedBlogs->map(function ($blog) {
+            $blog->cover_photo = asset('storage/' . $blog->cover_photo);
+            return $blog;
+        });
 
         return $this->success($relatedBlogs, 'Related blogs fetched successfully');
     }
