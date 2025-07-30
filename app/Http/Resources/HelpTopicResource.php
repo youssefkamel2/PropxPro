@@ -10,7 +10,6 @@ class HelpTopicResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'subcategory_id' => $this->subcategory_id,
             'title' => $this->title,
             'slug' => $this->slug,
             'content' => $this->content,
@@ -21,6 +20,18 @@ class HelpTopicResource extends JsonResource
                 return [
                     'id' => $this->author->id,
                     'name' => $this->author->name,
+                ];
+            }),
+            'category' => $this->whenLoaded('subcategory.category', function () {
+                return [
+                    'id' => $this->subcategory->category->id,
+                    'name' => $this->subcategory->category->name,
+                ];
+            }),
+            'subcategory' => $this->whenLoaded('subcategory', function () {
+                return [
+                    'id' => $this->subcategory->id,
+                    'name' => $this->subcategory->name,
                 ];
             }),
             'created_at' => $this->created_at,
