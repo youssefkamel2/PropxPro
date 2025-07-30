@@ -24,15 +24,10 @@ class HelpTopicResource extends JsonResource
                 ];
             }),
 
-            'category' => $this->subcategory->category ? [
-                'id' => $this->subcategory->category->id,
-                'name' => $this->subcategory->category->name,
-            ] : null,
-
-            'subcategory' => $this->subcategory ? [
-                'id' => $this->subcategory->id,
-                'name' => $this->subcategory->name,
-            ] : null,
+            'category_id' => $this->subcategory->category->id,
+            'category_name' => $this->subcategory->category->name,
+            'subcategory_id' => $this->subcategory->id,
+            'subcategory_name' => $this->subcategory->name,
 
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
