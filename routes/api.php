@@ -93,8 +93,6 @@ Route::group(['middleware' => ['auth:api']], function () {
             Route::post('/images/upload', [BlogController::class, 'uploadContentImage']);
             Route::delete('/{blog}', [BlogController::class, 'destroy']);
             Route::patch('/{blog}/toggle-active', [BlogController::class, 'toggleActive']);
-            Route::get('/recent', [BlogController::class, 'recentBlogs']);
-            Route::get('/{blog}/related', [BlogController::class, 'relatedBlogs']);
         });
 
         // Newsletter subscriber management
@@ -157,6 +155,8 @@ Route::post('newsletter/subscribe', [NewsletterSubscriptionController::class, 's
 Route::get('landing/blogs/active', [BlogController::class, 'activeBlogs']);
 Route::get('landing/blogs', [BlogController::class, 'publicIndex']);
 Route::get('landing/blogs/{blog}', [BlogController::class, 'show']);
+Route::get('landing/blogs/recent', [BlogController::class, 'recentBlogs']);
+Route::get('landing/blogs/{blog}/related', [BlogController::class, 'relatedBlogs']);
 
 // Public request demo endpoint
 Route::post('request-demo', [RequestDemoController::class, 'store']);
