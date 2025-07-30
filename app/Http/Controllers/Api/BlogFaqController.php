@@ -18,13 +18,9 @@ class BlogFaqController extends Controller
         $this->middleware('permission:manage_blog_faqs');
     }
 
-    public function index(Request $request)
+    public function index($blog)
     {
-        $faqs = BlogFaq::query();
-        if ($request->has('blog_id')) {
-            $faqs->where('blog_id', $request->blog_id);
-        }
-        $faqs = $faqs->orderBy('order')->get();
+        $faqs = BlogFaq::where('blog_id', $blog)->orderBy('order')->get();
         return $this->success(BlogFaqResource::collection($faqs), 'FAQs fetched successfully');
     }
 

@@ -97,7 +97,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         // Blog FAQ management
         Route::group(['prefix' => 'blogs/faq'], function () {
-            Route::get('/', [App\Http\Controllers\Api\BlogFaqController::class, 'index']);
+            Route::get('/{blog}', [App\Http\Controllers\Api\BlogFaqController::class, 'index']);
             Route::post('/', [App\Http\Controllers\Api\BlogFaqController::class, 'store']);
             Route::get('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'show']);
             Route::put('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'update']);
