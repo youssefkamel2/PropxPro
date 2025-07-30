@@ -76,6 +76,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'edit_blog' => 'Can edit blogs',
             'delete_blog' => 'Can delete blogs',
             'toggle_blog_status' => 'Can activate/deactivate blogs',
+            'manage_blog_faqs' => 'Can manage blog FAQs',
         ];
 
         // Newsletter subscriber management permissions
@@ -103,8 +104,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'create_help_topic' => 'Can create help topics',
             'edit_help_topic' => 'Can edit help topics',
             'delete_help_topic' => 'Can delete help topics',
-            // 'upload_help_topic_image' => 'Can upload images for help topics',
-            // 'manage_help_center' => 'Can manage all help center content',
         ];
 
         $allPermissions = array_merge(
@@ -142,9 +141,6 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Assign all permissions to superadmin
         $superadminRole->givePermissionTo(Permission::all());
-
-        // Assign manage_help_center to admin role as well
-        // $adminRole->givePermissionTo('manage_help_center');
 
         // Create default superadmin user if it doesn't exist
         $superadmin = User::firstOrCreate(

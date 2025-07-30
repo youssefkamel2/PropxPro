@@ -32,6 +32,11 @@ class Blog extends Model
         return $this->hasMany(NewsletterEmailLog::class);
     }
 
+    public function faqs()
+    {
+        return $this->hasMany(BlogFaq::class);
+    }
+
     public function setTagsAttribute($value)
     {
         if (is_array($value)) {

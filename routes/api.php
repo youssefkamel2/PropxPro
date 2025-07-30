@@ -95,6 +95,15 @@ Route::group(['middleware' => ['auth:api']], function () {
             Route::patch('/{blog}/toggle-active', [BlogController::class, 'toggleActive']);
         });
 
+        // Blog FAQ management
+        Route::group(['prefix' => 'blogs/faq'], function () {
+            Route::get('/', [App\Http\Controllers\Api\BlogFaqController::class, 'index']);
+            Route::post('/', [App\Http\Controllers\Api\BlogFaqController::class, 'store']);
+            Route::get('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'show']);
+            Route::put('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'update']);
+            Route::delete('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'destroy']);
+        });
+
         // Newsletter subscriber management
         Route::group(['prefix' => 'newsletter'], function () {
             Route::get('/', [NewsletterSubscriptionController::class, 'index']);

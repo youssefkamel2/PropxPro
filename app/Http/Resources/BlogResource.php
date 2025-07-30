@@ -20,6 +20,7 @@ class BlogResource extends JsonResource
             'is_active' => $this->is_active,
             'tags' => $this->tags,
             'headings' => $this->headings,
+            'faqs' => BlogFaqResource::collection($this->whenLoaded('faqs')),
             'author' => $this->whenLoaded('author', function () {
                 return [
                     'id' => $this->author->id,

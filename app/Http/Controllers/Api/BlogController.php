@@ -80,13 +80,13 @@ class BlogController extends Controller
         // get blog by the id or the slug, if $blog = number then search by id
 
         if (is_numeric($blog)) {
-            $blog = Blog::with('author')->find($blog);
+            $blog = Blog::with(['author', 'faqs'])->find($blog);
         } else {
-            $blog = Blog::with('author')->where('slug', $blog)->first();
+            $blog = Blog::with(['author', 'faqs'])->where('slug', $blog)->first();
         }
 
         if (!$blog || !$blog->is_active) {
-            return $this->error('Blog not found', 404);
+            return $this->error('Blog not found or inactive', 404);
         }
 
         return $this->success(new BlogResource($blog), 'Blog fetched successfully');
@@ -168,14 +168,14 @@ class BlogController extends Controller
     public function publicIndex()
     {
         // if no hero is found, then get the latest blog
-        $hero = Blog::where('is_active', true)->where('mark_as_hero', true)->latest()->first();
+        $hero = Blog::with(['author', 'faqs'])->where('is_active', true)->where('mark_as_hero', true)->latest()->first();
         if (!$hero) {
-            $hero = Blog::where('is_active', true)->latest()->first();
+            $hero = Blog::with(['author', 'faqs'])->where('is_active', true)->latest()->first();
         }
 
-        $latest = Blog::where('is_active', true)->latest()->take(3)->get();
-        $guides = Blog::where('is_active', true)->where('category', 'guides')->latest()->take(3)->get();
-        $trending = Blog::where('is_active', true)->where('category', 'trending')->latest()->take(3)->get();
+        $latest = Blog::with(['author', 'faqs'])->where('is_active', true)->latest()->take(3)->get();
+        $guides = Blog::with(['author', 'faqs'])->where('is_active', true)->where('category', 'guides')->latest()->take(3)->get();
+        $trending = Blog::with(['author', 'faqs'])->where('is_active', true)->where('category', 'trending')->latest()->take(3)->get();
         return $this->success([
             'hero' => $hero ? new BlogResource($hero) : null,
             'latest' => BlogResource::collection($latest),
@@ -186,7 +186,7 @@ class BlogController extends Controller
 
     public function activeBlogs()
     {
-        $blogs = Blog::where('is_active', true)->latest()->get();
+        $blogs = Blog::with(['author', 'faqs'])->where('is_active', true)->latest()->get();
         return $this->success(BlogResource::collection($blogs), 'Active blogs fetched successfully');
     }
 
