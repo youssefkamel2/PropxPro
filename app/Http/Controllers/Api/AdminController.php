@@ -225,6 +225,10 @@ class AdminController extends Controller
             return $this->error('Admin not found', 404);
         }
 
+        if ($admin && $admin->id === auth()->id()) {
+            return $this->error('You cannot update your own permissions', 403);
+        }
+
         if (!$admin->hasRole('admin')) {
             return $this->error('User is not an admin', 403);
         }

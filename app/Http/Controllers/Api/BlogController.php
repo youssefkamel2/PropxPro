@@ -77,8 +77,6 @@ class BlogController extends Controller
     public function show($blog)
     {
 
-        // get blog by the id or the slug, if $blog = number then search by id
-
         if (is_numeric($blog)) {
             $blog = Blog::with(['author', 'faqs'])->find($blog);
         } else {
