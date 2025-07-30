@@ -30,6 +30,7 @@ class HelpCenterController extends Controller
     // Show a topic by slug (public)
     public function showTopic($slug)
     {
+        // return also the category and subcategory
         $topic = HelpTopic::with('subcategory.category', 'author')
             ->where('slug', $slug)
             ->where('is_active', true)
@@ -37,6 +38,7 @@ class HelpCenterController extends Controller
         if (!$topic) {
             return $this->error('Topic not found', 404);
         }
+
         return $this->success(new HelpTopicResource($topic), 'Help topic fetched successfully');
     }
 
