@@ -39,6 +39,7 @@ class AdminController extends Controller
                 return [
                     'id' => $admin->id,
                     'name' => $admin->name,
+                    'bio' => $admin->bio,
                     'email' => $admin->email,
                     'profile_image' => $admin->profile_image ? asset('storage/' . $admin->profile_image) : null,
                     'status' => $admin->status,
