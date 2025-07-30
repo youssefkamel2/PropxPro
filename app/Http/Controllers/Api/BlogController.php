@@ -76,10 +76,17 @@ class BlogController extends Controller
 
     public function show($blog)
     {
-        // make sure that blog is active
-        $blog = Blog::with('author')->find($blog);
+
+        // get blog by the id or the slug, if $blog = number then search by id
+
+        if (is_numeric($blog)) {
+            $blog = Blog::with('author')->find($blog);
+        } else {
+            $blog = Blog::with('author')->where('slug', $blog)->first();
+        }
+
         if (!$blog || !$blog->is_active) {
-            return $this->error('Blog not found or inactive', 404);
+            return $this->error('Blog not found', 404);
         }
 
         return $this->success(new BlogResource($blog), 'Blog fetched successfully');
@@ -194,15 +201,6 @@ class BlogController extends Controller
         $path = $request->file('image')->store('blog-content', 'public');
         $url = asset('storage/' . $path);
         return $this->success(['url' => $url], 'Image uploaded successfully');
-    }
-
-    public function showBySlug($slug)
-    {
-        $blog = Blog::with('author')->where('slug', $slug)->where('is_active', true)->first();
-        if (!$blog) {
-            return $this->error('Blog not found', 404);
-        }
-        return $this->success(new BlogResource($blog), 'Blog fetched successfully');
     }
 
     public function recentBlogs()
