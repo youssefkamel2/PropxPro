@@ -206,7 +206,7 @@ class BlogController extends Controller
     public function recentBlogs()
     {
         $blogs = Blog::where('is_active', true)
-            ->select('id', 'slug', 'cover_photo', 'title', 'created_at')
+            ->select('id', 'slug', 'cover_photo', 'category' ,'title', 'created_at', 'updated_at')
             ->latest()
             ->take(5)
             ->get();
@@ -223,7 +223,7 @@ class BlogController extends Controller
         $relatedBlogs = Blog::where('is_active', true)
             ->where('id', '!=', $blogId)
             ->where('category', $blog->category)
-            ->select('id', 'slug', 'cover_photo', 'title', 'created_at')
+            ->select('id', 'slug', 'cover_photo', 'title', 'category' ,'created_at', 'updated_at')
             ->latest()
             ->take(3)
             ->get();
