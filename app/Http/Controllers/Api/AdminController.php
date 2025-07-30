@@ -226,11 +226,11 @@ class AdminController extends Controller
         }
 
         if ($admin && $admin->id === auth()->id()) {
-            return $this->error('You cannot update your own permissions', 401);
+            return $this->error('You cannot update your own permissions', 403);
         }
 
         if (!$admin->hasRole('admin')) {
-            return $this->error('User is not an admin', 401);
+            return $this->error('User is not an admin', 403);
         }
 
         $validator = Validator::make($request->all(), [
