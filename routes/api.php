@@ -155,7 +155,7 @@ Route::post('newsletter/subscribe', [NewsletterSubscriptionController::class, 's
 Route::get('landing/blogs/active', [BlogController::class, 'activeBlogs']);
 Route::get('landing/blogs', [BlogController::class, 'publicIndex']);
 Route::get('landing/blogs/{blog}', [BlogController::class, 'show']);
-Route::get('landing/blogs/recent', [BlogController::class, 'recentBlogs']);
+Route::get('landing/blogs/recent/added', [BlogController::class, 'recentBlogs']);
 Route::get('landing/blogs/{blog}/related', [BlogController::class, 'relatedBlogs']);
 
 // Public request demo endpoint
