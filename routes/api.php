@@ -250,4 +250,4 @@ Route::get('webinars/events', [App\Http\Controllers\Api\WebinarEventController::
 Route::get('webinars/events/{slug}', [App\Http\Controllers\Api\WebinarEventController::class, 'publicShow']);
 Route::post('webinars/events/{slug}/register', [App\Http\Controllers\Api\WebinarEventRegistrationController::class, 'register']);
 Route::get('webinars/videos', [App\Http\Controllers\Api\WebinarVideoController::class, 'publicIndex']);
-Route::get('webinars/videos/{slug}', [App\Http\Controllers\Api\WebinarVideoController::class, 'show']);
+Route::get('webinars/videos/{slug}', [App\Http\Controllers\Api\WebinarVideoController::class, 'publicShow']);

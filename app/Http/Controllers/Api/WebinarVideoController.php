@@ -91,4 +91,13 @@ class WebinarVideoController extends Controller
         $videos = WebinarVideo::orderBy('created_at', 'desc')->get();
         return $this->success(WebinarVideoResource::collection($videos), 'On-demand videos fetched successfully');
     }
+
+    public function publicShow($slug)
+    {
+        $video = WebinarVideo::where('slug', $slug)->first();
+        if (!$video) {
+            return $this->error('Video not found', 404);
+        }
+        return $this->success(new WebinarVideoResource($video), 'Video fetched successfully');
+    }
 }
