@@ -23,7 +23,11 @@ class WebinarEventController extends Controller
     public function index()
     {
         $events = WebinarEvent::with('registrations')->orderBy('date', 'desc')->get();
-        return $this->success(WebinarEventResource::collection($events), 'Events fetched successfully');
+        $resources = WebinarEventResource::collection($events);
+        foreach ($resources as $resource) {
+            $resource->showAdminFields = true;
+        }
+        return $this->success($resources, 'Events fetched successfully');
     }
 
     // Admin: Create event
@@ -53,11 +57,13 @@ class WebinarEventController extends Controller
     // Admin: Show event
     public function show($slug)
     {
-        $event = WebinarEvent::where('slug', $slug)->first();
+        $event = WebinarEvent::with('registrations')->where('slug', $slug)->first();
         if (!$event) {
             return $this->error('Event not found', 404);
         }
-        return $this->success(new WebinarEventResource($event), 'Event fetched successfully');
+        $resource = new WebinarEventResource($event);
+        $resource->showAdminFields = true;
+        return $this->success($resource, 'Event fetched successfully');
     }
 
     // Admin: Update event
