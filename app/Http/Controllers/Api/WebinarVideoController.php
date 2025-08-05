@@ -16,7 +16,7 @@ class WebinarVideoController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:manage_webinars')->except(['publicIndex']);
+        $this->middleware('permission:manage_webinars')->except(['publicIndex', 'publicShow']);
     }
 
     // Admin: List all videos
