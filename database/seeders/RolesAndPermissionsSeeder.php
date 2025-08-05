@@ -106,6 +106,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'delete_help_topic' => 'Can delete help topics',
         ];
 
+        // Webinar management permissions
+        $webinarPermissions = [
+            'manage_webinars' => 'Can manage webinars (events and videos)',
+        ];
+
         $allPermissions = array_merge(
             $adminManagementPermissions,
             $integrationPermissions,
@@ -115,7 +120,8 @@ class RolesAndPermissionsSeeder extends Seeder
             $blogPermissions,
             $newsletterPermissions,
             $requestDemoPermissions,
-            $helpCenterPermissions
+            $helpCenterPermissions,
+            $webinarPermissions
         );
 
         foreach ($allPermissions as $permission => $description) {
@@ -141,6 +147,8 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Assign all permissions to superadmin
         $superadminRole->givePermissionTo(Permission::all());
+        // Assign manage_webinars to admin role as well
+        $adminRole->givePermissionTo('manage_webinars');
 
         // Create default superadmin user if it doesn't exist
         $superadmin = User::firstOrCreate(
