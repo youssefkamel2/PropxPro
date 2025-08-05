@@ -155,7 +155,7 @@ Route::group(['middleware' => ['auth:api']], function () {
             Route::get('/', [App\Http\Controllers\Api\WebinarEventController::class, 'index']);
             Route::post('/', [App\Http\Controllers\Api\WebinarEventController::class, 'store']);
             Route::get('/{id}', [App\Http\Controllers\Api\WebinarEventController::class, 'show']);
-            Route::put('/{id}', [App\Http\Controllers\Api\WebinarEventController::class, 'update']);
+            Route::post('/{id}', [App\Http\Controllers\Api\WebinarEventController::class, 'update']);
             Route::delete('/{id}', [App\Http\Controllers\Api\WebinarEventController::class, 'destroy']);
         });
         // Webinar Videos management
