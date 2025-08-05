@@ -30,6 +30,11 @@ class WebinarVideoController extends Controller
 
     public function store(Request $request)
 {
+    // Check if request size exceeds limit early
+    if ($request->server('CONTENT_LENGTH') > (10 * 1024 * 1024)) { // 10MB in bytes
+        return $this->error('File size too large. Maximum allowed size is 10MB.', 413);
+    }
+
     // Base validation rules
     $rules = [
         'title' => 'required|string|max:255',
@@ -49,7 +54,7 @@ class WebinarVideoController extends Controller
             'required',
             'file',
             'mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime',
-            'max:2048' // 2MB - adjust as needed
+            'max:10240' // 10MB in KB
         ];
     }
 
