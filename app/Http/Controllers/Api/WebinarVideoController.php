@@ -32,7 +32,7 @@ class WebinarVideoController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'video_url' => 'required|string',
-            'cover_photo' => 'nullable|string',
+            'cover_photo' => 'required|image|max:4096',
             'type' => 'required|in:upload,youtube',
         ]);
         if ($validator->fails()) {
@@ -40,6 +40,9 @@ class WebinarVideoController extends Controller
         }
         $data = $validator->validated();
         $data['created_by'] = Auth::id();
+        if ($request->hasFile('cover_photo')) {
+            $data['cover_photo'] = $request->file('cover_photo')->store('webinars-videos', 'public');
+        }
         $video = WebinarVideo::create($data);
         return $this->success(new WebinarVideoResource($video), 'Video created successfully', 201);
     }
