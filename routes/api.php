@@ -145,7 +145,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         // add middleware to check file size
         // Webinar Events management
-        Route::group(['prefix' => 'webinars/events', 'middleware' => 'filesize'], function () {
+        Route::group(['prefix' => 'webinars/events'], function () {
             Route::get('/', [App\Http\Controllers\Api\WebinarEventController::class, 'index']);
             Route::post('/', [App\Http\Controllers\Api\WebinarEventController::class, 'store']);
             Route::get('/{slug}', [App\Http\Controllers\Api\WebinarEventController::class, 'show']);
