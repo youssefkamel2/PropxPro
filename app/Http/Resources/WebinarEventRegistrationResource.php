@@ -11,8 +11,11 @@ class WebinarEventRegistrationResource extends JsonResource
         return [
             'id' => $this->id,
             'event_id' => $this->event_id,
-            'name' => $this->name,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
             'email' => $this->email,
+            'company' => $this->company,
+            'reason_for_attending' => $this->reason_for_attending,
             'phone' => $this->phone,
             'created_at' => $this->created_at,
         ];

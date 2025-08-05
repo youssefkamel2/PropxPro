@@ -11,8 +11,11 @@ class WebinarEventRegistration extends Model
 
     protected $fillable = [
         'event_id',
-        'name',
+        'first_name',
+        'last_name',
         'email',
+        'company',
+        'reason_for_attending',
         'phone',
     ];
 

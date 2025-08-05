@@ -16,8 +16,11 @@ class WebinarEventRegistrationController extends Controller
     public function register(Request $request, $eventId)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email',
+            'company' => 'nullable|string|max:255',
+            'reason_for_attending' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
         ]);
         if ($validator->fails()) {

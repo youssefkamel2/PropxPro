@@ -22,7 +22,7 @@ class WebinarEventController extends Controller
     // Admin: List all events
     public function index()
     {
-        $events = WebinarEvent::orderBy('date', 'desc')->get();
+        $events = WebinarEvent::with('registrations')->orderBy('date', 'desc')->get();
         return $this->success(WebinarEventResource::collection($events), 'Events fetched successfully');
     }
 
