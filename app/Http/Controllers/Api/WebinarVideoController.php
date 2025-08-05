@@ -29,60 +29,60 @@ class WebinarVideoController extends Controller
     // Admin: Create video
 
     public function store(Request $request)
-{
+    {
 
-    // Base validation rules
-    $rules = [
-        'title' => 'required|string|max:255',
-        'type' => 'required|in:upload,youtube',
-        'cover_photo' => 'required|image|max:4096',
-    ];
-
-    // Add conditional validation rules based on type
-    if ($request->type === 'youtube') {
-        $rules['video_url'] = [
-            'required', 
-            'string', 
-            'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/i'
+        // Base validation rules
+        $rules = [
+            'title' => 'required|string|max:255',
+            'type' => 'required|in:upload,youtube',
+            'cover_photo' => 'required|image|max:4096',
         ];
-    } elseif ($request->type === 'upload') {
-        $rules['video_url'] = [
-            'required',
-            'file',
-            'mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime',
-            'max:10240' // 10MB in KB
-        ];
-    }
 
-    // Single validation call
-    $validator = Validator::make($request->all(), $rules);
-    
-    if ($validator->fails()) {
-        return $this->error($validator->errors()->first(), 422);
-    }
-
-    $data = $validator->validated();
-    $data['created_by'] = Auth::id();
-
-    // Handle cover photo upload
-    if ($request->hasFile('cover_photo')) {
-        $data['cover_photo'] = $request->file('cover_photo')->store('webinars-videos-covers', 'public');
-    }
-
-    // Handle video based on type
-    if ($request->type === 'youtube') {
-        $data['video_url'] = $request->video_url;
-    } elseif ($request->type === 'upload') {
-        try {
-            $data['video_url'] = $request->file('video_url')->store('webinars-videos-uploads', 'public');
-        } catch (\Exception $e) {
-            return $this->error('Failed to upload video file', 500);
+        // Add conditional validation rules based on type
+        if ($request->type === 'youtube') {
+            $rules['video_url'] = [
+                'required',
+                'string',
+                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/i'
+            ];
+        } elseif ($request->type === 'upload') {
+            $rules['video_url'] = [
+                'required',
+                'file',
+                'mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime',
+                'max:10240' // 10MB in KB
+            ];
         }
-    }
 
-    $video = WebinarVideo::create($data);
-    return $this->success(new WebinarVideoResource($video), 'Video created successfully', 201);
-}
+        // Single validation call
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->error($validator->errors()->first(), 422);
+        }
+
+        $data = $validator->validated();
+        $data['created_by'] = Auth::id();
+
+        // Handle cover photo upload
+        if ($request->hasFile('cover_photo')) {
+            $data['cover_photo'] = $request->file('cover_photo')->store('webinars-videos-covers', 'public');
+        }
+
+        // Handle video based on type
+        if ($request->type === 'youtube') {
+            $data['video_url'] = $request->video_url;
+        } elseif ($request->type === 'upload') {
+            try {
+                $data['video_url'] = $request->file('video_url')->store('webinars-videos-uploads', 'public');
+            } catch (\Exception $e) {
+                return $this->error('Failed to upload video file', 500);
+            }
+        }
+
+        $video = WebinarVideo::create($data);
+        return $this->success(new WebinarVideoResource($video), 'Video created successfully', 201);
+    }
 
     // Admin: Show video
     public function show($slug)

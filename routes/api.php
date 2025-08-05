@@ -96,13 +96,6 @@ Route::group(['middleware' => ['auth:api']], function () {
         });
 
         // Blog FAQ management
-        // Route::group(['prefix' => 'blogs/manage/faq'], function () {
-        //     Route::get('/{blog}', [App\Http\Controllers\Api\BlogFaqController::class, 'index']);
-        //     Route::post('/', [App\Http\Controllers\Api\BlogFaqController::class, 'store']);
-        //     Route::get('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'show']);
-        //     Route::put('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'update']);
-        //     Route::delete('/{id}', [App\Http\Controllers\Api\BlogFaqController::class, 'destroy']);
-        // });
 
         Route::group(['prefix' => 'blogs/{blog}/manage/faq'], function () {
             Route::get('/', [App\Http\Controllers\Api\BlogFaqController::class, 'index']);
@@ -121,7 +114,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         Route::get('/request-demos', [RequestDemoController::class, 'index']);
 
-        // Admin self-service settings (2-step verification)
+        // Admin settings
         Route::post('/settings/request-update', [\App\Http\Controllers\Api\AdminSettingsController::class, 'requestUpdate']);
         Route::post('/settings/confirm-update', [\App\Http\Controllers\Api\AdminSettingsController::class, 'confirmUpdate']);
 
