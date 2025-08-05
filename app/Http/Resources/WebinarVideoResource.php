@@ -11,6 +11,7 @@ class WebinarVideoResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'slug' => $this->slug,
             'video_url' => $this->video_url,
             'cover_photo' => $this->cover_photo,
             'type' => $this->type,

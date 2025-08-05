@@ -154,17 +154,17 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::group(['prefix' => 'webinars/events'], function () {
             Route::get('/', [App\Http\Controllers\Api\WebinarEventController::class, 'index']);
             Route::post('/', [App\Http\Controllers\Api\WebinarEventController::class, 'store']);
-            Route::get('/{id}', [App\Http\Controllers\Api\WebinarEventController::class, 'show']);
-            Route::post('/{id}', [App\Http\Controllers\Api\WebinarEventController::class, 'update']);
-            Route::delete('/{id}', [App\Http\Controllers\Api\WebinarEventController::class, 'destroy']);
+            Route::get('/{slug}', [App\Http\Controllers\Api\WebinarEventController::class, 'show']);
+            Route::post('/{slug}', [App\Http\Controllers\Api\WebinarEventController::class, 'update']);
+            Route::delete('/{slug}', [App\Http\Controllers\Api\WebinarEventController::class, 'destroy']);
         });
         // Webinar Videos management
         Route::group(['prefix' => 'webinars/videos'], function () {
             Route::get('/', [App\Http\Controllers\Api\WebinarVideoController::class, 'index']);
             Route::post('/', [App\Http\Controllers\Api\WebinarVideoController::class, 'store']);
-            Route::get('/{id}', [App\Http\Controllers\Api\WebinarVideoController::class, 'show']);
-            Route::post('/{id}', [App\Http\Controllers\Api\WebinarVideoController::class, 'update']);
-            Route::delete('/{id}', [App\Http\Controllers\Api\WebinarVideoController::class, 'destroy']);
+            Route::get('/{slug}', [App\Http\Controllers\Api\WebinarVideoController::class, 'show']);
+            Route::post('/{slug}', [App\Http\Controllers\Api\WebinarVideoController::class, 'update']);
+            Route::delete('/{slug}', [App\Http\Controllers\Api\WebinarVideoController::class, 'destroy']);
         });
 
     });
@@ -247,6 +247,7 @@ Route::get('help-center/search', [App\Http\Controllers\Api\HelpCenterController:
 
 // Public Webinar APIs
 Route::get('webinars/events', [App\Http\Controllers\Api\WebinarEventController::class, 'publicIndex']);
-Route::get('webinars/events/{id}', [App\Http\Controllers\Api\WebinarEventController::class, 'publicShow']);
-Route::post('webinars/events/{id}/register', [App\Http\Controllers\Api\WebinarEventRegistrationController::class, 'register']);
+Route::get('webinars/events/{slug}', [App\Http\Controllers\Api\WebinarEventController::class, 'publicShow']);
+Route::post('webinars/events/{slug}/register', [App\Http\Controllers\Api\WebinarEventRegistrationController::class, 'register']);
 Route::get('webinars/videos', [App\Http\Controllers\Api\WebinarVideoController::class, 'publicIndex']);
+Route::get('webinars/videos/{slug}', [App\Http\Controllers\Api\WebinarVideoController::class, 'show']);

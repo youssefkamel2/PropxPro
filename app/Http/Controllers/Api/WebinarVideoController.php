@@ -45,9 +45,9 @@ class WebinarVideoController extends Controller
     }
 
     // Admin: Show video
-    public function show($id)
+    public function show($slug)
     {
-        $video = WebinarVideo::find($id);
+        $video = WebinarVideo::where('slug', $slug)->first();
         if (!$video) {
             return $this->error('Video not found', 404);
         }
@@ -55,9 +55,9 @@ class WebinarVideoController extends Controller
     }
 
     // Admin: Update video
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        $video = WebinarVideo::find($id);
+        $video = WebinarVideo::where('slug', $slug)->first();
         if (!$video) {
             return $this->error('Video not found', 404);
         }
@@ -75,9 +75,9 @@ class WebinarVideoController extends Controller
     }
 
     // Admin: Delete video
-    public function destroy($id)
+    public function destroy($slug)
     {
-        $video = WebinarVideo::find($id);
+        $video = WebinarVideo::where('slug', $slug)->first();
         if (!$video) {
             return $this->error('Video not found', 404);
         }

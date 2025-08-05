@@ -11,6 +11,7 @@ class WebinarEventResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'slug' => $this->slug,
             'date' => $this->date,
             'cover_photo' => $this->cover_photo,
             'duration' => $this->duration,

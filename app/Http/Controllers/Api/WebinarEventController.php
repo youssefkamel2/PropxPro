@@ -51,9 +51,9 @@ class WebinarEventController extends Controller
     }
 
     // Admin: Show event
-    public function show($id)
+    public function show($slug)
     {
-        $event = WebinarEvent::find($id);
+        $event = WebinarEvent::where('slug', $slug)->first();
         if (!$event) {
             return $this->error('Event not found', 404);
         }
@@ -61,9 +61,9 @@ class WebinarEventController extends Controller
     }
 
     // Admin: Update event
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        $event = WebinarEvent::find($id);
+        $event = WebinarEvent::where('slug', $slug)->first();
         if (!$event) {
             return $this->error('Event not found', 404);
         }
@@ -82,9 +82,9 @@ class WebinarEventController extends Controller
     }
 
     // Admin: Delete event
-    public function destroy($id)
+    public function destroy($slug)
     {
-        $event = WebinarEvent::find($id);
+        $event = WebinarEvent::where('slug', $slug)->first();
         if (!$event) {
             return $this->error('Event not found', 404);
         }
@@ -100,9 +100,9 @@ class WebinarEventController extends Controller
     }
 
     // Public: Show event
-    public function publicShow($id)
+    public function publicShow($slug)
     {
-        $event = WebinarEvent::find($id);
+        $event = WebinarEvent::where('slug', $slug)->first();
         if (!$event) {
             return $this->error('Event not found', 404);
         }
