@@ -32,7 +32,7 @@ class WebinarEventController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'date' => 'required|date',
-            'cover_photo' => 'required|string',
+            'cover_photo' => 'required|image|max:4096',
             'duration' => 'required|string',
             'presented_by' => 'required|string',
         ]);
@@ -41,6 +41,11 @@ class WebinarEventController extends Controller
         }
         $data = $validator->validated();
         $data['created_by'] = Auth::id();
+
+        if ($request->hasFile('cover_photo')) {
+            $data['cover_photo'] = $request->file('cover_photo')->store('webinars-events', 'public');
+        }
+
         $event = WebinarEvent::create($data);
         return $this->success(new WebinarEventResource($event), 'Event created successfully', 201);
     }
