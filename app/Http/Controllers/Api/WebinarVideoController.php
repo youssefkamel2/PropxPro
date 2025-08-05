@@ -30,12 +30,6 @@ class WebinarVideoController extends Controller
 
     public function store(Request $request)
 {
-    // Check if request size exceeds limit early
-    if ($request->server('CONTENT_LENGTH') > (10 * 1024 * 1024)) { // 10MB in bytes
-        return $this->error('File size too large. Maximum allowed size is 10MB.', 413);
-    }
-    
-    echo $request->server('CONTENT_LENGTH');die;
 
     // Base validation rules
     $rules = [
