@@ -31,18 +31,31 @@ class WebinarVideoController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
-            'video_url' => 'required|string',
-            'cover_photo' => 'required|image|max:4096',
             'type' => 'required|in:upload,youtube',
+            'cover_photo' => 'required|image|max:4096',
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors()->first(), 422);
         }
         $data = $validator->validated();
         $data['created_by'] = Auth::id();
+
         if ($request->hasFile('cover_photo')) {
-            $data['cover_photo'] = $request->file('cover_photo')->store('webinars-videos', 'public');
+            $data['cover_photo'] = $request->file('cover_photo')->store('webinars-videos-covers', 'public');
         }
+
+        if ($request->type === 'youtube') {
+            $request->validate([
+                'video_url' => ['required', 'string', 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/i']
+            ]);
+            $data['video_url'] = $request->video_url;
+        } elseif ($request->type === 'upload') {
+            $request->validate([
+                'video_url' => 'required|file|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:2048'
+            ]);
+            $data['video_url'] = $request->file('video_url')->store('webinars-videos-uploads', 'public');
+        }
+
         $video = WebinarVideo::create($data);
         return $this->success(new WebinarVideoResource($video), 'Video created successfully', 201);
     }
@@ -66,14 +79,30 @@ class WebinarVideoController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|string|max:255',
-            'video_url' => 'sometimes|string',
-            'cover_photo' => 'nullable|string',
             'type' => 'sometimes|in:upload,youtube',
+            'cover_photo' => 'nullable|string',
+            // video_url validation will be handled below
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors()->first(), 422);
         }
-        $video->update($validator->validated());
+        $data = $validator->validated();
+
+        if ($request->has('type')) {
+            if ($request->type === 'youtube') {
+                $request->validate([
+                    'video_url' => ['required', 'string', 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/i']
+                ]);
+                $data['video_url'] = $request->video_url;
+            } elseif ($request->type === 'upload') {
+                $request->validate([
+                    'video_url' => 'required|file|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:2048'
+                ]);
+                $data['video_url'] = $request->file('video_url')->store('webinars-videos', 'public');
+            }
+        }
+
+        $video->update($data);
         return $this->success(new WebinarVideoResource($video), 'Video updated successfully');
     }
 
