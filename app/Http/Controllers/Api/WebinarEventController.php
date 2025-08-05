@@ -96,6 +96,7 @@ class WebinarEventController extends Controller
     public function publicIndex()
     {
         $events = WebinarEvent::orderBy('date', 'asc')->get();
+        $events->makeHidden(['created_by', 'registrations']);
         return $this->success(WebinarEventResource::collection($events), 'Upcoming events fetched successfully');
     }
 
@@ -106,6 +107,7 @@ class WebinarEventController extends Controller
         if (!$event) {
             return $this->error('Event not found', 404);
         }
+        $event->makeHidden(['created_by', 'registrations']);
         return $this->success(new WebinarEventResource($event), 'Event fetched successfully');
     }
 }
