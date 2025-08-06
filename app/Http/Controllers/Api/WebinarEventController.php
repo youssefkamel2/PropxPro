@@ -86,13 +86,24 @@ class WebinarEventController extends Controller
             'slug' => 'sometimes|string|max:255|unique:webinar_events,slug,' . $event->id,
             'host_image' => 'sometimes|image|max:4096',
             'date' => 'sometimes|date',
-            'cover_photo' => 'sometimes',
+            'cover_photo' => 'sometimes|image|max:4096',
             'duration' => 'sometimes|string',
             'presented_by' => 'sometimes|string',
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors()->first(), 422);
         }
+
+        $data = $validator->validated();
+        if ($request->hasFile('cover_photo')) {
+            $data['cover_photo'] = $request->file('cover_photo')->store('webinars-events', 'public');
+        }
+
+        if ($request->hasFile('host_image')) {
+            $data['host_image'] = $request->file('host_image')->store('webinars-hosts', 'public');
+        }
+
+
         $event->update($validator->validated());
         return $this->success(new WebinarEventResource($event), 'Event updated successfully');
     }
