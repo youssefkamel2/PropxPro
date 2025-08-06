@@ -35,6 +35,7 @@ class WebinarEventController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
             'date' => 'required|date',
             'cover_photo' => 'required|image|max:4096',
             'duration' => 'required|string',
@@ -75,6 +76,7 @@ class WebinarEventController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|string|max:255',
+            'description' => 'sometimes|string|max:1000',
             'date' => 'sometimes|date',
             'cover_photo' => 'sometimes|string',
             'duration' => 'sometimes|string',

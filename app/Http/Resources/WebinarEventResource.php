@@ -11,9 +11,10 @@ class WebinarEventResource extends JsonResource
         $data = [
             'id' => $this->id,
             'title' => $this->title,
+            'description' => $this->description,
             'slug' => $this->slug,
             'date' => $this->date,
-            'cover_photo' => $this->cover_photo,
+            'cover_photo' => $this->cover_photo ? url($this->cover_photo) : null,
             'duration' => $this->duration,
             'presented_by' => $this->presented_by,
             'created_at' => $this->created_at,

@@ -11,6 +11,7 @@ class WebinarVideo extends Model
 
     protected $fillable = [
         'title',
+        'description',
         'slug',
         'video_url',
         'cover_photo',

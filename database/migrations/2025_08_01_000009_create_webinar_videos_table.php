@@ -10,6 +10,8 @@ return new class extends Migration {
         Schema::create('webinar_videos', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('slug')->unique();
+            $table->string('description')->nullable();
             $table->string('video_url');
             $table->string('cover_photo')->nullable();
             $table->enum('type', ['upload', 'youtube']);

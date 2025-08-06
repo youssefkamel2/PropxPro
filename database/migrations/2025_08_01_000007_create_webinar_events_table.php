@@ -10,8 +10,11 @@ return new class extends Migration {
         Schema::create('webinar_events', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('slug')->unique();
+            $table->string('description')->nullable();
             $table->dateTime('date');
             $table->string('cover_photo');
+            $table->string('host_image')->nullable();
             $table->string('duration');
             $table->string('presented_by');
             $table->unsignedBigInteger('created_by');

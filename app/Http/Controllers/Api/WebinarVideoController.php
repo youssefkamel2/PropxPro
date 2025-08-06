@@ -34,8 +34,10 @@ class WebinarVideoController extends Controller
         // Base validation rules
         $rules = [
             'title' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
             'type' => 'required|in:upload,youtube',
             'cover_photo' => 'required|image|max:4096',
+            'host_image' => 'nullable|image|max:2048',
         ];
 
         // Add conditional validation rules based on type
@@ -67,6 +69,9 @@ class WebinarVideoController extends Controller
         // Handle cover photo upload
         if ($request->hasFile('cover_photo')) {
             $data['cover_photo'] = $request->file('cover_photo')->store('webinars-videos-covers', 'public');
+        }
+        if ($request->hasFile('host_image')) {
+            $data['host_image'] = $request->file('host_image')->store('webinars-videos-hosts', 'public');
         }
 
         // Handle video based on type
@@ -103,8 +108,10 @@ class WebinarVideoController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|string|max:255',
+            'description' => 'sometimes|string|max:1000',
             'type' => 'sometimes|in:upload,youtube',
             'cover_photo' => 'nullable|string',
+            'host_image' => 'nullable|image|max:2048',
             // video_url validation will be handled below
         ]);
         if ($validator->fails()) {
@@ -124,6 +131,12 @@ class WebinarVideoController extends Controller
                 ]);
                 $data['video_url'] = $request->file('video_url')->store('webinars-videos', 'public');
             }
+        }
+        if ($request->hasFile('cover_photo')) {
+            $data['cover_photo'] = $request->file('cover_photo')->store('webinars-videos-covers', 'public');
+        }
+        if ($request->hasFile('host_image')) {
+            $data['host_image'] = $request->file('host_image')->store('webinars-videos-hosts', 'public');
         }
 
         $video->update($data);

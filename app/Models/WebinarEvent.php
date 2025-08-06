@@ -11,6 +11,7 @@ class WebinarEvent extends Model
 
     protected $fillable = [
         'title',
+        'description',
         'slug',
         'date',
         'cover_photo',
