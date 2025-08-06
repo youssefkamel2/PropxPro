@@ -110,7 +110,7 @@ class WebinarVideoController extends Controller
             'title' => 'sometimes|string|max:255',
             'description' => 'sometimes|string|max:1000',
             'type' => 'sometimes|in:upload,youtube',
-            'cover_photo' => 'nullable|string',
+            'cover_photo' => 'nullable',
             'host_image' => 'nullable|image|max:2048',
             // video_url validation will be handled below
         ]);

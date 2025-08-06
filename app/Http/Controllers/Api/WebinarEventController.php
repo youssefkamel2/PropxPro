@@ -78,7 +78,7 @@ class WebinarEventController extends Controller
             'title' => 'sometimes|string|max:255',
             'description' => 'sometimes|string|max:1000',
             'date' => 'sometimes|date',
-            'cover_photo' => 'sometimes|string',
+            'cover_photo' => 'sometimes',
             'duration' => 'sometimes|string',
             'presented_by' => 'sometimes|string',
         ]);
