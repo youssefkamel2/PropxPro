@@ -6,6 +6,20 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class WebinarEventResource extends JsonResource
 {
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<string, mixed>
+     */
+
+    public $showAdminFields = false;
+    public function __construct($resource, $showAdminFields = false)
+    {
+        parent::__construct($resource);
+        $this->showAdminFields = $showAdminFields;
+    }
     public function toArray($request)
     {
         $data = [
