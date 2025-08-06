@@ -37,7 +37,7 @@ class WebinarEventController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
             'slug' => 'nullable|string|max:255|unique:webinar_events,slug',
-            'host_image' => 'nullable|image|max:4096',
+            'host_image' => 'required|image|max:4096',
             'date' => 'required|date',
             'cover_photo' => 'required|image|max:4096',
             'duration' => 'required|string',
