@@ -14,7 +14,7 @@ class WebinarVideoResource extends JsonResource
             'description' => $this->description,
             'slug' => $this->slug,
             'video_url' => $this->getVideoUrl(),
-            'cover_photo' => $this->cover_photo ? asset($this->cover_photo) : null,
+            'cover_photo' => $this->cover_photo ? asset('storage/' . $this->cover_photo) : null,
             'type' => $this->type,
             'created_by' => $this->created_by,
             'created_at' => $this->created_at,
@@ -35,10 +35,10 @@ class WebinarVideoResource extends JsonResource
 
         // If type is upload, return the full asset URL
         if ($this->type === 'upload') {
-            return asset($this->video_url);
+            return asset('storage/' . $this->video_url);
         }
 
         // Fallback - return as asset URL
-        return asset($this->video_url);
+        return asset('storage/' . $this->video_url);
     }
 }
