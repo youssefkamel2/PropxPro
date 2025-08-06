@@ -36,6 +36,8 @@ class WebinarEventController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
+            'slug' => 'nullable|string|max:255|unique:webinar_events,slug',
+            'host_image' => 'nullable|image|max:4096',
             'date' => 'required|date',
             'cover_photo' => 'required|image|max:4096',
             'duration' => 'required|string',
@@ -49,6 +51,10 @@ class WebinarEventController extends Controller
 
         if ($request->hasFile('cover_photo')) {
             $data['cover_photo'] = $request->file('cover_photo')->store('webinars-events', 'public');
+        }
+
+        if ($request->hasFile('host_image')) {
+            $data['host_image'] = $request->file('host_image')->store('webinars-hosts', 'public');
         }
 
         $event = WebinarEvent::create($data);
@@ -77,6 +83,8 @@ class WebinarEventController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|string|max:255',
             'description' => 'sometimes|string|max:1000',
+            'slug' => 'sometimes|string|max:255|unique:webinar_events,slug,' . $event->id,
+            'host_image' => 'sometimes|image|max:4096',
             'date' => 'sometimes|date',
             'cover_photo' => 'sometimes',
             'duration' => 'sometimes|string',

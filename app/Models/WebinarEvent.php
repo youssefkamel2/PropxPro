@@ -13,6 +13,7 @@ class WebinarEvent extends Model
         'title',
         'description',
         'slug',
+        'host_image',
         'date',
         'cover_photo',
         'duration',
