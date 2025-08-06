@@ -15,8 +15,8 @@ class WebinarEventResource extends JsonResource
             'slug' => $this->slug,
             'date' => $this->date,
             // return the images url as https://api.propxpro.com/storage/webinars-events/FLtm4eEnJPzq9e51moRee4pGZNOXdFK4uZwZxrXu.png
-            'cover_photo' => $this->cover_photo ? 'https://api.propxpro.com/storage/webinars-events/' . $this->cover_photo : null,
-            'host_image' => $this->host_image ? 'https://api.propxpro.com/storage/webinars-events/' . $this->host_image : null,
+            'cover_photo' => $this->cover_photo ? 'https://api.propxpro.com/storage/' . $this->cover_photo : null,
+            'host_image' => $this->host_image ? 'https://api.propxpro.com/storage/' . $this->host_image : null,
             'duration' => $this->duration,
             'presented_by' => $this->presented_by,
             'created_at' => $this->created_at,
