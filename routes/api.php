@@ -197,47 +197,47 @@ Route::get('help-center/topic/{slug}', [App\Http\Controllers\Api\HelpCenterContr
 Route::get('help-center/search', [App\Http\Controllers\Api\HelpCenterController::class, 'search']);
 
 
-// Route::get('/google-calendar/auth', function () {
-//     $client = new Google\Client();
-//     $client->setAuthConfig(storage_path('app/google-calendar/oauth-credentials.json'));
-//     $client->addScope(Google\Service\Calendar::CALENDAR_EVENTS);
-//     $client->setRedirectUri('http://localhost:8000/api/google-calendar/oauth-callback');
-//     $client->setAccessType('offline');
-//     $client->setPrompt('consent'); // Ensures refresh token is returned
+Route::get('/google-calendar/auth', function () {
+    $client = new Google\Client();
+    $client->setAuthConfig(storage_path('app/google-calendar/oauth-credentials.json'));
+    $client->addScope(Google\Service\Calendar::CALENDAR_EVENTS);
+    $client->setRedirectUri('http://localhost:8000/api/google-calendar/oauth-callback');
+    $client->setAccessType('offline');
+    $client->setPrompt('consent'); // Ensures refresh token is returned
 
-//     $authUrl = $client->createAuthUrl();
-//     return redirect()->away($authUrl);
-// });
+    $authUrl = $client->createAuthUrl();
+    return redirect()->away($authUrl);
+});
 
-// Route::get('/google-calendar/oauth-callback', function (Request $request) {
-//     $client = new Google\Client();
-//     $client->setAuthConfig(storage_path('app/google-calendar/oauth-credentials.json'));
-//     $client->addScope(Google\Service\Calendar::CALENDAR_EVENTS);
-//     $client->setRedirectUri('http://localhost:8000/api/google-calendar/oauth-callback');
+Route::get('/google-calendar/oauth-callback', function (Request $request) {
+    $client = new Google\Client();
+    $client->setAuthConfig(storage_path('app/google-calendar/oauth-credentials.json'));
+    $client->addScope(Google\Service\Calendar::CALENDAR_EVENTS);
+    $client->setRedirectUri('http://localhost:8000/api/google-calendar/oauth-callback');
 
-//     try {
-//         if (!$request->has('code')) {
-//             throw new \Exception('Missing authorization code');
-//         }
+    try {
+        if (!$request->has('code')) {
+            throw new \Exception('Missing authorization code');
+        }
 
-//         $token = $client->fetchAccessTokenWithAuthCode($request->code);
+        $token = $client->fetchAccessTokenWithAuthCode($request->code);
 
-//         if (isset($token['error'])) {
-//             Log::error('Google OAuth Error', $token);
-//             return response()->json(['error' => $token['error_description'] ?? 'Failed to get access token'], 400);
-//         }
+        if (isset($token['error'])) {
+            Log::error('Google OAuth Error', $token);
+            return response()->json(['error' => $token['error_description'] ?? 'Failed to get access token'], 400);
+        }
 
-//         Storage::put('google-calendar/oauth-token.json', json_encode($token));
+        Storage::put('google-calendar/oauth-token.json', json_encode($token));
 
-//         return response()->json([
-//             'success' => true,
-//             'message' => 'Successfully authenticated!'
-//         ]);
-//     } catch (\Exception $e) {
-//         Log::error('Google Auth Exception: ' . $e->getMessage());
-//         return response()->json(['error' => $e->getMessage()], 500);
-//     }
-// });
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully authenticated!'
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Google Auth Exception: ' . $e->getMessage());
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
 
 // Public Webinar APIs
 Route::get('webinars/events', [App\Http\Controllers\Api\WebinarEventController::class, 'publicIndex']);
