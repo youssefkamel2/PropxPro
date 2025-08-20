@@ -28,17 +28,14 @@ class WebinarVideoResource extends JsonResource
             return null;
         }
 
-        // If type is youtube, return the URL as is
         if ($this->type === 'youtube') {
             return $this->video_url;
         }
 
-        // If type is upload, return the full asset URL
         if ($this->type === 'upload') {
             return asset('storage/' . $this->video_url);
         }
 
-        // Fallback - return as asset URL
         return asset('storage/' . $this->video_url);
     }
 }

@@ -154,10 +154,20 @@ class RequestDemoController extends Controller
             'failure_reason' => $e->getMessage()
         ]);
 
+        // Check if it's an OAuth error and return appropriate error response
+        $errorMessage = $e->getMessage();
+        if (str_contains($errorMessage, 'invalid_grant') || str_contains($errorMessage, 'unauthorized')) {
+            return $this->error(
+                'Unable to schedule demo due to system configuration issue. Please contact support.',
+                500,
+                ['demo_id' => $demo->id, 'error_type' => 'oauth_error']
+            );
+        }
+
         return $this->error(
-            'Demo request received but scheduling failed. Our team will contact you.',
-            200,
-            ['demo_id' => $demo->id]
+            'Unable to schedule demo at this time. Please try again later or contact support.',
+            500,
+            ['demo_id' => $demo->id, 'error_type' => 'scheduling_error']
         );
     }
 }

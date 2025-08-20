@@ -55,7 +55,6 @@ class WebinarVideoController extends Controller
             ];
         }
 
-        // Single validation call
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {

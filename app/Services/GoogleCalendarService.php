@@ -39,10 +39,21 @@ class GoogleCalendarService
     protected function refreshToken()
     {
         if ($this->client->getRefreshToken()) {
-            $newToken = $this->client->fetchAccessTokenWithRefreshToken(
-                $this->client->getRefreshToken()
-            );
-            $this->saveToken($newToken);
+            try {
+                $newToken = $this->client->fetchAccessTokenWithRefreshToken(
+                    $this->client->getRefreshToken()
+                );
+                
+                if (isset($newToken['error'])) {
+                    throw new \Exception('OAuth refresh failed: ' . $newToken['error'] . ' - ' . ($newToken['error_description'] ?? ''));
+                }
+                
+                $this->saveToken($newToken);
+            } catch (\Exception $e) {
+                throw new \Exception('Failed to refresh OAuth token: ' . $e->getMessage());
+            }
+        } else {
+            throw new \Exception('No refresh token available. OAuth re-authorization required.');
         }
     }
 
@@ -54,6 +65,11 @@ class GoogleCalendarService
     public function createEventWithMeet(array $eventData)
     {
         try {
+            // Verify we have a valid access token
+            if (!$this->client->getAccessToken()) {
+                throw new \Exception('No valid OAuth access token available');
+            }
+
             $service = new Calendar($this->client);
 
             $event = new Event([
@@ -92,6 +108,12 @@ class GoogleCalendarService
                 'html_link' => $createdEvent->getHtmlLink()
             ];
 
+        } catch (\Google\Service\Exception $e) {
+            $error = json_decode($e->getMessage(), true);
+            if (isset($error['error'])) {
+                throw new \Exception('Google Calendar API error: ' . $error['error'] . ' - ' . ($error['error_description'] ?? $e->getMessage()));
+            }
+            throw new \Exception('Google Calendar API error: ' . $e->getMessage());
         } catch (\Exception $e) {
             throw $e;
         }
