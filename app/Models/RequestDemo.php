@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class RequestDemo extends Model
@@ -11,6 +12,7 @@ class RequestDemo extends Model
     use HasFactory;
 
     protected $fillable = [
+        'uuid',
         'first_name',
         'last_name',
         'phone',
@@ -20,6 +22,7 @@ class RequestDemo extends Model
         'preferred_datetime',
         'google_event_id',
         'google_meet_link',
+        'google_event_html_link',
         'meet_status',
         'status',
         'failure_reason',
@@ -27,6 +30,22 @@ class RequestDemo extends Model
         'scheduled_at',
         'email_sent_at',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 
     protected $casts = [
         'preferred_datetime' => 'datetime',
@@ -36,7 +55,13 @@ class RequestDemo extends Model
     protected $appends = [
         'full_name',
         'formatted_datetime',
+        'public_id',
     ];
+
+    public function getPublicIdAttribute()
+    {
+        return $this->uuid;
+    }
 
     // Possible status values
     const STATUS_PENDING = 'pending';

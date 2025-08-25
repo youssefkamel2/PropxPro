@@ -45,11 +45,15 @@ class RequestDemoController extends Controller
         try {
             $this->scheduleCalendarEvent($demo);
 
-            return $this->success([
-                'meet_link' => $demo->google_meet_link,
-                'event_link' => $this->getCalendarEventLink($demo),
-                'demo_id' => $demo->id
-            ], 'Demo scheduled successfully');
+            return response()->json([
+                'success' => true,
+                'message' => 'Demo scheduled successfully',
+                'data' => [
+                    'meet_link' => $demo->google_meet_link,
+                    'event_link' => $this->getCalendarEventLink($demo),
+                    'demo_id' => $demo->public_id,
+                ],
+            ], 201);
         } catch (\Exception $e) {
             Log::error('Demo scheduling failed: ' . $e->getMessage());
             return $this->handleFailure($demo, $e);
@@ -94,6 +98,7 @@ class RequestDemoController extends Controller
         $demo->update([
             'google_event_id' => $event['event_id'],
             'google_meet_link' => $event['meet_link'],
+            'google_event_html_link' => $event['html_link'] ?? null,
             'meet_status' => RequestDemo::MEET_STATUS_AWAITING_CONFIRMATION,
             'status' => RequestDemo::STATUS_PENDING,
             'scheduled_at' => now(),
@@ -129,9 +134,19 @@ class RequestDemoController extends Controller
             return null;
         }
 
+        // Get the HTML link from the database if available
+        if ($demo->google_event_html_link) {
+            return $demo->google_event_html_link;
+        }
+
+        // Fallback to constructing the URL if HTML link is not available
+        $calendarId = config('google-calendar.calendar_id');
+        $calendarId = str_replace('@', '40', $calendarId); // Replace @ with URL-encoded %40
+        
         return sprintf(
-            'https://calendar.google.com/calendar/event?eid=%s',
-            urlencode($demo->google_event_id)
+            'https://calendar.google.com/calendar/event?eid=%s%%%s',
+            base64_encode(sprintf('%s %s', $demo->google_event_id, $calendarId)),
+            'google.com'
         );
     }
 
@@ -160,14 +175,14 @@ class RequestDemoController extends Controller
             return $this->error(
                 'Unable to schedule demo due to system configuration issue. Please contact support.',
                 500,
-                ['demo_id' => $demo->id, 'error_type' => 'oauth_error']
+                ['demo_id' => $demo->public_id, 'error_type' => 'oauth_error']
             );
         }
 
         return $this->error(
             'Unable to schedule demo at this time. Please try again later or contact support.',
             500,
-            ['demo_id' => $demo->id, 'error_type' => 'scheduling_error']
+            ['demo_id' => $demo->public_id, 'error_type' => 'scheduling_error']
         );
     }
 }
