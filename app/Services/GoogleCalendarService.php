@@ -77,15 +77,31 @@ class GoogleCalendarService
                 'description' => $eventData['description'],
                 'start' => ['dateTime' => $eventData['start']],
                 'end' => ['dateTime' => $eventData['end']],
-                'attendees' => [['email' => $eventData['attendee_email']]],
+                'guestsCanInviteOthers' => false,
+                'guestsCanModify' => false,
+                'guestsCanSeeOtherGuests' => false,
+                'attendees' => [
+                    [
+                        'email' => $eventData['attendee_email'],
+                        'responseStatus' => 'declined' // This prevents Google from sending an invite
+                    ]
+                ],
                 'creator' => [
                     'displayName' => 'PropxPro Support',
-                    'email' => 'support@propxpro.com'
+                    'email' => 'support@propxpro.com',
+                    'self' => true
                 ],
                 'organizer' => [
                     'displayName' => 'PropxPro Support',
-                    'email' => 'info@propxpro.com'
+                    'email' => 'info@propxpro.com',
+                    'self' => true
                 ],
+                'transparency' => 'opaque',
+                'visibility' => 'private',
+                'reminders' => [
+                    'useDefault' => false,
+                    'overrides' => []
+                ]
             ]);
 
             // Add Google Meet conference
@@ -101,8 +117,10 @@ class GoogleCalendarService
                 $event,
                 [
                     'conferenceDataVersion' => 1,
-                    'sendUpdates' => 'all',
-                    'supportsAttachments' => false
+                    'sendUpdates' => 'none', // Prevent Google from sending any emails
+                    'supportsAttachments' => false,
+                    'sendNotifications' => false,
+                    'alwaysIncludeEmail' => false
                 ]
             );
 
