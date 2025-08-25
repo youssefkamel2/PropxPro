@@ -118,9 +118,7 @@ class GoogleCalendarService
                 [
                     'conferenceDataVersion' => 1,
                     'sendUpdates' => 'none', // Prevent Google from sending any emails
-                    'supportsAttachments' => false,
-                    'sendNotifications' => false,
-                    'alwaysIncludeEmail' => false
+                    'supportsAttachments' => false
                 ]
             );
 
