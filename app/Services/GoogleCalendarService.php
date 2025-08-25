@@ -99,13 +99,21 @@ class GoogleCalendarService
             $createdEvent = $service->events->insert(
                 $this->calendarId,
                 $event,
-                ['conferenceDataVersion' => 1]
+                [
+                    'conferenceDataVersion' => 1,
+                    'sendUpdates' => 'all',
+                    'supportsAttachments' => false
+                ]
             );
 
+            // Ensure we have the full event with all fields
+            $event = $service->events->get($this->calendarId, $createdEvent->getId());
+
             return [
-                'event_id' => $createdEvent->getId(),
-                'meet_link' => $createdEvent->getHangoutLink(),
-                'html_link' => $createdEvent->getHtmlLink()
+                'event_id' => $event->id,
+                'meet_link' => $event->hangoutLink ?? null,
+                'html_link' => $event->htmlLink ?? null,
+                'conference_data' => $event->conferenceData ?? null
             ];
 
         } catch (\Google\Service\Exception $e) {

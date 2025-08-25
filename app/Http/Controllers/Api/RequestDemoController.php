@@ -95,9 +95,16 @@ class RequestDemoController extends Controller
 
         $event = $calendarService->createEventWithMeet($eventDetails);
 
+        // Log the event data for debugging
+        Log::info('Google Calendar event created:', [
+            'event_id' => $event['event_id'],
+            'meet_link' => $event['meet_link'] ?? null,
+            'html_link' => $event['html_link'] ?? null,
+        ]);
+
         $demo->update([
             'google_event_id' => $event['event_id'],
-            'google_meet_link' => $event['meet_link'],
+            'google_meet_link' => $event['meet_link'] ?? null,
             'google_event_html_link' => $event['html_link'] ?? null,
             'meet_status' => RequestDemo::MEET_STATUS_AWAITING_CONFIRMATION,
             'status' => RequestDemo::STATUS_PENDING,
@@ -141,12 +148,15 @@ class RequestDemoController extends Controller
 
         // Fallback to constructing the URL if HTML link is not available
         $calendarId = config('google-calendar.calendar_id');
-        $calendarId = str_replace('@', '40', $calendarId); // Replace @ with URL-encoded %40
         
+        // Format the event ID to be URL-safe
+        $eventId = str_replace('@google.com', '', $demo->google_event_id);
+        $eventId = urlencode($eventId);
+        
+        // Construct the direct URL to the event in Google Calendar
         return sprintf(
-            'https://calendar.google.com/calendar/event?eid=%s%%%s',
-            base64_encode(sprintf('%s %s', $demo->google_event_id, $calendarId)),
-            'google.com'
+            'https://calendar.google.com/calendar/u/0/r/eventedit/%s',
+            $eventId
         );
     }
 
