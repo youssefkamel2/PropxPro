@@ -77,30 +77,19 @@ class GoogleCalendarService
                 'description' => $eventData['description'],
                 'start' => ['dateTime' => $eventData['start']],
                 'end' => ['dateTime' => $eventData['end']],
-                'guestsCanInviteOthers' => false,
-                'guestsCanModify' => false,
-                'guestsCanSeeOtherGuests' => false,
                 'attendees' => [
                     [
                         'email' => $eventData['attendee_email'],
-                        'responseStatus' => 'declined' // This prevents Google from sending an invite
+                        'responseStatus' => 'needsAction' // Allow attendee to respond to the invite
                     ]
                 ],
                 'creator' => [
                     'displayName' => 'PropxPro Support',
-                    'email' => 'support@propxpro.com',
-                    'self' => true
+                    'email' => 'support@propxpro.com'
                 ],
                 'organizer' => [
                     'displayName' => 'PropxPro Support',
-                    'email' => 'info@propxpro.com',
-                    'self' => true
-                ],
-                'transparency' => 'opaque',
-                'visibility' => 'private',
-                'reminders' => [
-                    'useDefault' => false,
-                    'overrides' => []
+                    'email' => 'info@propxpro.com'
                 ]
             ]);
 
@@ -117,7 +106,7 @@ class GoogleCalendarService
                 $event,
                 [
                     'conferenceDataVersion' => 1,
-                    'sendUpdates' => 'none', // Prevent Google from sending any emails
+                    'sendUpdates' => 'all', // Send invitations and notifications
                     'supportsAttachments' => false
                 ]
             );
