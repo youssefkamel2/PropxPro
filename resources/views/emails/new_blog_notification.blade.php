@@ -454,7 +454,7 @@
             </div>
             
             <!-- CTA Button -->
-            <a href="{{ config('app.frontend_url', 'https://propx-pro.vercel.app') }}/blog/post/{{ $blog->id }}" class="cta-button">
+            <a href="{{ config('app.frontend_url', 'https://propx-pro.vercel.app') }}/blog/post/{{ $blog->slug }}" class="cta-button">
                 Read Full Article
             </a>
             
@@ -478,15 +478,6 @@
                 </div>
                 
                 <div class="footer-divider"></div>
-                
-                <div class="footer-bottom">
-                    <div class="footer-links">
-                        <a href="#" class="footer-link">Privacy Policy</a>
-                        <a href="#" class="footer-link">Terms of Service</a>
-                        <a href="#" class="footer-link">Contact Us</a>
-                    </div>
-                    
-                </div>
                 
                 <div class="footer-copyright">
                     © {{ date('Y') }} PropX Pro. All rights reserved.<br>
