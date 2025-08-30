@@ -85,14 +85,28 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         });
 
+        // Blog media handling
+        Route::group(['prefix' => 'blog-media'], function () {
+            Route::post('/upload-video', [\App\Http\Controllers\Api\BlogMediaController::class, 'uploadVideo']);
+            Route::post('/process-youtube', [\App\Http\Controllers\Api\BlogMediaController::class, 'processYoutubeUrl']);
+        });
+
         // Blog management
         Route::group(['prefix' => 'blogs'], function () {
+            // Single blog operations
             Route::get('/', [BlogController::class, 'index']);
             Route::post('/', [BlogController::class, 'store']);
             Route::post('/{blog}', [BlogController::class, 'update']);
             Route::post('/images/upload', [BlogController::class, 'uploadContentImage']);
             Route::delete('/{blog}', [BlogController::class, 'destroy']);
             Route::patch('/{blog}/toggle-active', [BlogController::class, 'toggleActive']);
+            
+            // Bulk operations
+            Route::post('/bulk/delete', [BlogController::class, 'bulkDelete']);
+            Route::post('/bulk/update-status', [BlogController::class, 'bulkUpdateStatus']);
+            Route::post('/bulk/update-category', [BlogController::class, 'bulkUpdateCategory']);
+            Route::post('/bulk/mark-as-hero', [BlogController::class, 'bulkMarkAsHero']);
+            Route::post('/bulk/update', [BlogController::class, 'bulkUpdate']);
         });
 
         // Blog FAQ management

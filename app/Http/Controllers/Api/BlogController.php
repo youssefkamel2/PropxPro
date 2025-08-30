@@ -19,9 +19,9 @@ class BlogController extends Controller
     {
         $this->middleware('permission:view_blogs')->only(['index']);
         $this->middleware('permission:create_blog')->only('store');
-        $this->middleware('permission:edit_blog')->only('update');
-        $this->middleware('permission:delete_blog')->only('destroy');
-        $this->middleware('permission:toggle_blog_status')->only('toggleActive');
+        $this->middleware('permission:edit_blog')->only(['update', 'bulkUpdateStatus', 'bulkUpdateCategory', 'bulkMarkAsHero', 'bulkUpdate']);
+        $this->middleware('permission:delete_blog')->only(['destroy', 'bulkDelete']);
+        $this->middleware('permission:toggle_blog_status')->only(['toggleActive', 'bulkUpdateStatus']);
     }
 
     public function index()
@@ -186,6 +186,139 @@ class BlogController extends Controller
     {
         $blogs = Blog::with(['author', 'faqs'])->where('is_active', true)->latest()->get();
         return $this->success(BlogResource::collection($blogs), 'Active blogs fetched successfully');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ids' => 'required|array',
+            'ids.*' => 'exists:blogs,id',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error($validator->errors()->first(), 422);
+        }
+
+        try {
+            $blogs = Blog::whereIn('id', $request->ids)->get();
+            
+            foreach ($blogs as $blog) {
+                if ($blog->cover_photo) {
+                    Storage::disk('public')->delete($blog->cover_photo);
+                }
+                $blog->delete();
+            }
+
+            return $this->success(null, count($request->ids) . ' blogs deleted successfully');
+        } catch (\Exception $e) {
+            return $this->error('Failed to delete blogs: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function bulkUpdateStatus(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ids' => 'required|array',
+            'ids.*' => 'exists:blogs,id',
+            'status' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error($validator->errors()->first(), 422);
+        }
+
+        try {
+            $count = Blog::whereIn('id', $request->ids)->update(['is_active' => $request->status]);
+            
+            // If activating blogs, send notifications for any that weren't active before
+            if ($request->status) {
+                $newlyActivated = Blog::whereIn('id', $request->ids)->where('is_active', true)->get();
+                foreach ($newlyActivated as $blog) {
+                    SendBlogToSubscribersJob::dispatch($blog);
+                }
+            }
+
+            return $this->success(null, 'Status updated for ' . $count . ' blogs');
+        } catch (\Exception $e) {
+            return $this->error('Failed to update blog statuses: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function bulkUpdateCategory(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ids' => 'required|array',
+            'ids.*' => 'exists:blogs,id',
+            'category' => 'required|in:trending,guides,insights',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error($validator->errors()->first(), 422);
+        }
+
+        try {
+            $count = Blog::whereIn('id', $request->ids)
+                ->update(['category' => $request->category]);
+
+            return $this->success(null, 'Category updated for ' . $count . ' blogs');
+        } catch (\Exception $e) {
+            return $this->error('Failed to update blog categories: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function bulkMarkAsHero(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:blogs,id',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error($validator->errors()->first(), 422);
+        }
+
+        try {
+            // First reset all heroes
+            Blog::where('mark_as_hero', true)->update(['mark_as_hero' => false]);
+            
+            // Set the new hero
+            $blog = Blog::find($request->id);
+            $blog->mark_as_hero = true;
+            $blog->save();
+
+            return $this->success(new BlogResource($blog), 'Blog marked as hero successfully');
+        } catch (\Exception $e) {
+            return $this->error('Failed to update hero status: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function bulkUpdate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ids' => 'required|array',
+            'ids.*' => 'exists:blogs,id',
+            'category' => 'sometimes|in:trending,guides,insights',
+            'is_active' => 'sometimes|boolean',
+            'mark_as_hero' => 'sometimes|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error($validator->errors()->first(), 422);
+        }
+
+        try {
+            $updates = $request->only(['category', 'is_active', 'mark_as_hero']);
+            
+            // If marking as hero, first reset all heroes
+            (isset($updates['mark_as_hero']) && $updates['mark_as_hero']) 
+                ? Blog::where('mark_as_hero', true)->update(['mark_as_hero' => false])
+                : null;
+
+            $count = Blog::whereIn('id', $request->ids)->update($updates);
+
+            return $this->success(null, 'Updated ' . $count . ' blogs');
+        } catch (\Exception $e) {
+            return $this->error('Failed to update blogs: ' . $e->getMessage(), 500);
+        }
     }
 
     public function uploadContentImage(Request $request)
