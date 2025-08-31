@@ -150,10 +150,7 @@ class BlogController extends Controller
             if (!empty($data['content'])) {
                 $data['content'] = $this->processDynamicDates($data['content']);
             }
-
-            // print the reutrn from the process dynamic dates function 
-            print_r($data['content']);
-            die;
+            
             if ($request->hasFile('cover_photo')) {
                 // Delete old image
                 if ($blog->cover_photo) {
