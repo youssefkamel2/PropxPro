@@ -229,14 +229,6 @@ class BlogController extends Controller
 
         try {
             $count = Blog::whereIn('id', $request->ids)->update(['is_active' => $request->status]);
-            
-            // If activating blogs, send notifications for any that weren't active before
-            if ($request->status) {
-                $newlyActivated = Blog::whereIn('id', $request->ids)->where('is_active', true)->get();
-                foreach ($newlyActivated as $blog) {
-                    SendBlogToSubscribersJob::dispatch($blog);
-                }
-            }
 
             return $this->success(null, 'Status updated for ' . $count . ' blogs');
         } catch (\Exception $e) {
