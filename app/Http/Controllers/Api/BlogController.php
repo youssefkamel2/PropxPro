@@ -15,6 +15,26 @@ class BlogController extends Controller
 {
     use ResponseTrait;
 
+    /**
+     * Process content to update dynamic dates to current year
+     * 
+     * @param string $content
+     * @return string
+     */
+    private function processDynamicDates($content)
+    {
+        if (empty($content)) {
+            return $content;
+        }
+
+        $currentYear = date('Y');
+        $pattern = '/<span\s+class=[\'\"]dynamic-date[\'\"]>(\d{4})<\/span>/i';
+        
+        return preg_replace_callback($pattern, function($matches) use ($currentYear) {
+            return str_replace($matches[1], $currentYear, $matches[0]);
+        }, $content);
+    }
+
     public function __construct()
     {
         $this->middleware('permission:view_blogs')->only(['index']);
@@ -55,6 +75,12 @@ class BlogController extends Controller
                 }
             }
             $data['created_by'] = Auth::id();
+            
+            // Process dynamic dates in content
+            if (!empty($data['content'])) {
+                $data['content'] = $this->processDynamicDates($data['content']);
+            }
+            
             if ($request->hasFile('cover_photo')) {
                 $data['cover_photo'] = $request->file('cover_photo')->store('blogs', 'public');
             }
@@ -119,6 +145,13 @@ class BlogController extends Controller
                     $data['headings'] = json_decode($data['headings'], true);
                 }
             }
+
+            // Process dynamic dates in content
+            if (!empty($data['content'])) {
+                $data['content'] = $this->processDynamicDates($data['content']);
+            }
+
+            
             if ($request->hasFile('cover_photo')) {
                 // Delete old image
                 if ($blog->cover_photo) {
