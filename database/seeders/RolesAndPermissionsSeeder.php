@@ -150,18 +150,6 @@ class RolesAndPermissionsSeeder extends Seeder
         // Assign manage_webinars to admin role as well
         $adminRole->givePermissionTo('manage_webinars');
 
-        // Create default superadmin user if it doesn't exist
-        $superadmin = User::firstOrCreate(
-            ['email' => 'superadmin@propxpro.com'],
-            [
-                'name' => 'Super Admin',
-                'password' => Hash::make('superadmin123'),
-                'status' => 'active'
-            ]
-        );
-
-        $superadmin->assignRole('superadmin');
-
         Schema::enableForeignKeyConstraints();
     }
 }
